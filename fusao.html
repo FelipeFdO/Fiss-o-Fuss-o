@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="purple">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Fusão Nuclear — Barreira de Coulomb &amp; Reatores</title>
+  <!-- Favicon SVG de Sol/Plasma de Fusão Nuclear -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d0917'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23facc15' stroke-width='3' stroke-dasharray='6 4'/%3E%3Ccircle cx='32' cy='32' r='13' fill='%23f59e0b' opacity='0.28'/%3E%3Ccircle cx='26.5' cy='32' r='5.5' fill='%23f43f5e'/%3E%3Ccircle cx='37.5' cy='32' r='5.5' fill='%2338bdf8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="fusao.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="28" height="28">
+          <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="6 4"/>
+          <circle cx="32" cy="32" r="14" fill="#f59e0b" opacity="0.25"/>
+          <circle cx="26.5" cy="32" r="5.5" fill="#f43f5e"/>
+          <circle cx="37.5" cy="32" r="5.5" fill="#38bdf8"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Simulador de Fusão Nuclear</h1>
+        <p class="subtitle" id="appSubtitle">Física do Sol na Terra &bull; Barreira de Coulomb vs. Força Nuclear Forte</p>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <a href="fissao.html" class="sim-switch-link" title="Ir para o Simulador de Fissão Nuclear">
+        <span class="btn-icon" aria-hidden="true">⚛️</span>
+        <span>Ir para Fissão</span>
+      </a>
+
+      <div class="theme-picker" id="themePicker" title="Escolher tema de cores">
+        <span class="theme-label">Tema:</span>
+        <button type="button" class="theme-swatch active" data-theme="purple" title="Roxo Quântico"></button>
+        <button type="button" class="theme-swatch" data-theme="indigo" title="Magenta Neon"></button>
+        <button type="button" class="theme-swatch" data-theme="blue" title="Azul Ciano"></button>
+        <button type="button" class="theme-swatch" data-theme="emerald" title="Verde Radioativo"></button>
+        <button type="button" class="theme-swatch" data-theme="amber" title="Âmbar Solar"></button>
+        <button type="button" class="theme-swatch" data-theme="crimson" title="Rubi Plasma"></button>
+      </div>
+
+      <div class="mode-tabs" id="modeTabs" role="tablist">
+        <button type="button" class="mode-tab active" data-mode="collision" role="tab" aria-selected="true">
+          <span class="btn-icon" aria-hidden="true">🔬</span>
+          <span>1. Colisão &amp; Barreira</span>
+        </button>
+        <button type="button" class="mode-tab" data-mode="reactor" role="tab" aria-selected="false" title="Simular Confinamento Magnético (Tokamak/ITER) vs. Confinamento Inercial a Laser (NIF) e Fator Q">
+          <span class="btn-icon" aria-hidden="true">☀️</span>
+          <span>2. Tokamak &amp; Laser</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- Painel Esquerdo: Controles da Fusão -->
+    <aside class="panel controls-panel">
+      <!-- SEÇÃO 1: Pares de Combustível de Fusão -->
+      <section class="control-group">
+        <h2 id="fuelGroupTitle">1. Isótopos da Fusão (Projétil + Alvo)</h2>
+
+        <div class="fuel-cards" id="fuelSelector">
+          <button type="button" class="fuel-card active" data-fuel="DT">
+            <div class="isotope-badge dt-color">
+              <div class="iso-item">
+                <div class="iso-numbers"><span>2</span><span>1</span></div>
+                <span class="iso-letter">H</span>
+              </div>
+              <span class="iso-plus">+</span>
+              <div class="iso-item">
+                <div class="iso-numbers"><span>3</span><span>1</span></div>
+                <span class="iso-letter">H</span>
+              </div>
+            </div>
+            <div class="fuel-info">
+              <strong>Deutério + Trítio</strong>
+              <span class="tag tag-dt">ITER / NIF</span>
+            </div>
+          </button>
+
+          <button type="button" class="fuel-card" data-fuel="DD">
+            <div class="isotope-badge dd-color">
+              <div class="iso-item">
+                <div class="iso-numbers"><span>2</span><span>1</span></div>
+                <span class="iso-letter">H</span>
+              </div>
+              <span class="iso-plus">+</span>
+              <div class="iso-item">
+                <div class="iso-numbers"><span>2</span><span>1</span></div>
+                <span class="iso-letter">H</span>
+              </div>
+            </div>
+            <div class="fuel-info">
+              <strong>Deutério + Deutério</strong>
+              <span class="tag tag-dd">Água do Mar</span>
+            </div>
+          </button>
+
+          <button type="button" class="fuel-card" data-fuel="DHe3">
+            <div class="isotope-badge dhe3-color">
+              <div class="iso-item">
+                <div class="iso-numbers"><span>2</span><span>1</span></div>
+                <span class="iso-letter">H</span>
+              </div>
+              <span class="iso-plus">+</span>
+              <div class="iso-item">
+                <div class="iso-numbers"><span>3</span><span>2</span></div>
+                <span class="iso-letter">He</span>
+              </div>
+            </div>
+            <div class="fuel-info">
+              <strong>Deutério + Hélio-3</strong>
+              <span class="tag tag-dhe3">Sem Nêutron</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- CONTROLES DO MODO 1: COLISÃO E BARREIRA DE COULOMB -->
+      <div id="collisionModeControls" class="mode-controls-wrapper">
+        <section class="control-group">
+          <h2>2. Rota dos Produtos da Fusão</h2>
+          <div id="pathwayStaticBox" class="pathway-static-box" title="Esta reação possui apenas uma rota física principal"></div>
+          <select id="pathwaySelect" class="select-input hidden"></select>
+          <p id="pathwayHint" class="helper-text">Núcleos leves se unem formando um núcleo mais pesado e liberando energia extrema.</p>
+        </section>
+
+        <section class="control-group control-group-expand">
+          <h2>3. Acelerador Térmico (Plasma)</h2>
+
+          <div class="sliders-container">
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="tempSlider" title="Na escala de milhões de graus, 150 Milhões K ≈ 150 Milhões °C (diferença de apenas 273 K)">Temperatura (Milhões K)</label>
+                <div class="atom-input-group">
+                  <input type="number" id="tempInput" class="atom-num-input" min="10" max="160" step="5" value="150" title="Temperatura em Milhões de Kelvin - MK (10 a 160 MK)">
+                  <span class="unit-mini" title="Megakelvin (Milhões de Kelvin)">MK</span>
+                </div>
+              </div>
+              <input type="range" id="tempSlider" min="10" max="160" step="5" value="150">
+              <div class="preset-chips" id="tempPresetChips">
+                <button type="button" class="chip-btn" data-temp="25" title="25 Milhões K (≈ 25 M°C): Energia insuficiente, Barreira de Coulomb repele!">25 (Frio)</button>
+                <button type="button" class="chip-btn" data-temp="75" title="75 Milhões K (≈ 75 M°C): Chega perto, mas ainda sofre repulsão elétrica">75 (Quase)</button>
+                <button type="button" class="chip-btn" data-temp="110" title="110 Milhões K (≈ 110 M°C): Vence a barreira do Deutério-Trítio!">110 (Limiar)</button>
+                <button type="button" class="chip-btn active" data-temp="150" title="150 Milhões K (≈ 150 M°C): Temperatura do plasma no ITER (10x o núcleo do Sol)">150 (ITER)</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="aimSlider">Mira / Parâmetro de Impacto</label>
+                <span id="aimValueLabel" class="value-pill">Frontal (0°)</span>
+              </div>
+              <input type="range" id="aimSlider" min="-35" max="35" step="1" value="0">
+              <div class="preset-chips cols-3" id="aimPresetChips">
+                <button type="button" class="chip-btn" data-aim="-25" title="Disparo inclinado acima (-25°): A Barreira de Coulomb desvia o núcleo!">Acima (-25°)</button>
+                <button type="button" class="chip-btn active" data-aim="0" title="Colisão Frontal (0°): Alinhamento ideal para vencer a Barreira de Coulomb">Frontal (0°)</button>
+                <button type="button" class="chip-btn" data-aim="25" title="Disparo inclinado abaixo (+25°): A Barreira de Coulomb desvia o núcleo!">Abaixo (+25°)</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="speedSlider">Câmera (Velocidade)</label>
+                <span id="speedValueLabel" class="value-pill">1.0x (Normal)</span>
+              </div>
+              <input type="range" id="speedSlider" min="0.25" max="1.5" step="0.25" value="1.0">
+              <div class="preset-chips cols-3" id="speedPresetChips">
+                <button type="button" class="chip-btn" data-speed="0.25" title="0.25x: Câmera lenta para observar a Barreira de Coulomb e a Força Forte">0.25x (Lenta)</button>
+                <button type="button" class="chip-btn active" data-speed="1" title="1.0x: Velocidade normal da simulação">1.0x (Normal)</button>
+                <button type="button" class="chip-btn" data-speed="1.5" title="1.5x: Velocidade acelerada">1.5x (Rápida)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button type="button" id="fireBtn" class="btn-fire">
+              🔥 DISPARAR
+            </button>
+            <button type="button" id="pauseBtn" class="btn-pause" title="Pausar ou continuar simulação (Atalho: Espaço)">
+              ⏸ Pausar
+            </button>
+            <button type="button" id="resetBtn" class="btn-reset" title="Reiniciar colisão">
+              ↺ Resetar
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- CONTROLES DO MODO 2: TOKAMAK (MAGNÉTICO) VS. LASER INERCIAL (NIF) -->
+      <div id="reactorModeControls" class="mode-controls-wrapper hidden">
+        <section class="control-group">
+          <h2>2. Tecnologia de Confinamento</h2>
+          <div class="reactor-tech-toggle" id="reactorTechToggle">
+            <button type="button" class="tech-btn active" data-tech="tokamak" title="Confinamento Magnético em formato de rosca (toroide) com ímãs supercondutores (Ex: ITER na França)">
+              <span class="btn-icon">🧲</span>
+              <span>Tokamak (ITER)</span>
+            </button>
+            <button type="button" class="tech-btn" data-tech="laser" title="Confinamento Inercial com 192 feixes de laser comprimindo uma cápsula de D-T (Ex: NIF nos EUA)">
+              <span class="btn-icon">⚡</span>
+              <span>Laser (NIF)</span>
+            </button>
+          </div>
+          <p id="reactorTechHint" class="helper-text">
+            Gaiola magnética invisível mantém o plasma a 150 MK sem tocar nas paredes metálicas.
+          </p>
+        </section>
+
+        <section class="control-group control-group-expand">
+          <h2 id="reactorParamsTitle">3. Parâmetros da Usina &amp; Fator Q</h2>
+
+          <!-- Sliders do Tokamak (ITER) -->
+          <div id="tokamakSliders" class="sliders-container">
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="magFieldSlider">Campo Magnético (Ímãs)</label>
+                <span id="magFieldLabel" class="value-pill">13.0 T (ITER)</span>
+              </div>
+              <input type="range" id="magFieldSlider" min="0" max="15" step="0.5" value="13">
+              <div class="preset-chips" id="magPresetChips">
+                <button type="button" class="chip-btn" data-mag="0" title="Queda de energia nos ímãs: o plasma encosta na parede fria e apaga em milissegundos (Zero Meltdown!)">0 T (Falha!)</button>
+                <button type="button" class="chip-btn" data-mag="5" title="Campo fraco: plasma instável perde calor">5 T (Fraco)</button>
+                <button type="button" class="chip-btn" data-mag="10" title="Bom confinamento toroidal">10 T (Bom)</button>
+                <button type="button" class="chip-btn active" data-mag="13" title="13 Tesla: Campo dos ímãs supercondutores de Nb3Sn do ITER">13 T (ITER)</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="heatingPowerSlider">Aquecimento Injetado (P_in)</label>
+                <span id="heatingPowerLabel" class="value-pill">50 MW</span>
+              </div>
+              <input type="range" id="heatingPowerSlider" min="10" max="70" step="5" value="50">
+              <div class="preset-chips" id="heatPresetChips">
+                <button type="button" class="chip-btn" data-heat="15" title="15 MW: Plasma ainda abaixo da temperatura ótima de ignição">15 MW</button>
+                <button type="button" class="chip-btn" data-heat="30" title="30 MW: Próximo do ponto de equilíbrio (Q ≈ 1)">30 MW</button>
+                <button type="button" class="chip-btn active" data-heat="50" title="Meta do ITER: Injetar 50 MW para gerar 500 MW de fusão (Q_alvo = 10)!">50 MW (ITER)</button>
+                <button type="button" class="chip-btn" data-heat="70" title="70 MW: Alta potência térmica no núcleo toroidal">70 MW</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label>Manta de Lítio (⁶Li)</label>
+                <button type="button" id="lithiumToggleBtn" class="mini-toggle active" title="Nêutrons da fusão D-T colidem com a parede de Lítio (⁶Li) e fabricam novo Trítio (³H) para o reator!">
+                  🧱 Ativada (Gera ³H)
+                </button>
+              </div>
+              <div class="slider-ticks">
+                <span>n⁰ + ⁶Li &rarr; ⁴He + ³H (Recicla Trítio!)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sliders do Laser Inercial (NIF) -->
+          <div id="laserSliders" class="sliders-container hidden">
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="laserEnergySlider">Energia dos 192 Lasers</label>
+                <span id="laserEnergyLabel" class="value-pill">2.05 MJ (NIF)</span>
+              </div>
+              <input type="range" id="laserEnergySlider" min="0.5" max="2.5" step="0.05" value="2.05">
+              <div class="preset-chips" id="laserPresetChips">
+                <button type="button" class="chip-btn" data-laser="0.9" title="0,90 MJ: Compressão insuficiente (Q < 1)">0.90 MJ</button>
+                <button type="button" class="chip-btn" data-laser="1.5" title="1,50 MJ: Próximo do limiar de ignição (Q ≈ 0.7)">1.50 MJ</button>
+                <button type="button" class="chip-btn active" data-laser="2.05" title="Marco Histórico NIF (Dez/2022): 2,05 MJ nos lasers geraram 3,15 MJ de fusão (Q_alvo = 1,54)!">2.05 (NIF 22)</button>
+                <button type="button" class="chip-btn" data-laser="2.5" title="2,50 MJ: Pulso de alta energia de implosão">2.50 MJ</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="laserSymSlider">Simetria da Implosão</label>
+                <span id="laserSymLabel" class="value-pill">100% (Esférica)</span>
+              </div>
+              <input type="range" id="laserSymSlider" min="50" max="100" step="5" value="100">
+              <div class="preset-chips cols-3" id="laserSymPresetChips">
+                <button type="button" class="chip-btn" data-sym="50" title="50% (Assimétrica): Cápsula deforma e não atinge ignição">50% (Falha)</button>
+                <button type="button" class="chip-btn" data-sym="80" title="80% (Parcial): Compressão moderada">80% (Parcial)</button>
+                <button type="button" class="chip-btn active" data-sym="100" title="100% (Esférica): Implosão simétrica perfeita (Ignição!)">100% (Esférica)</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label>Rede Elétrica (~300 MJ)</label>
+                <span id="laserGridPill" class="value-pill" style="color:#fbbf24">Q_global &approx; 0.01</span>
+              </div>
+              <div class="slider-ticks">
+                <span>Para gerar 2,05 MJ de laser, a usina consome ~300 MJ!</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button type="button" id="reactorActionBtn" class="btn-fire">
+              ⚠️ FALHA (0 T)
+            </button>
+            <button type="button" id="reactorPauseBtn" class="btn-pause" title="Pausar ou continuar simulação (Atalho: Espaço)">
+              ⏸ Pausar
+            </button>
+            <button type="button" id="reactorResetBtn" class="btn-reset" title="Reiniciar usina de fusão">
+              ↺ Resetar
+            </button>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <!-- Centro: Câmara de Visualização Canvas Proporcional -->
+    <section class="stage-container">
+      <div class="stage-overlay-top">
+        <div class="status-badge" id="stageStatusBadge">
+          Pronto para disparo de fusão
+        </div>
+        <div class="legend" id="stageLegend">
+          <span><i class="dot proton-dot"></i> Prótons (+)</span>
+          <span><i class="dot neutron-dot"></i> Nêutrons (0)</span>
+          <span><i class="dot strong-dot"></i> Força Forte</span>
+          <span><i class="dot gamma-dot"></i> Energia (Q)</span>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper" id="canvasWrapper">
+        <canvas id="simCanvas"></canvas>
+      </div>
+
+      <!-- Barra de Progresso Físico da Fusão -->
+      <div class="reaction-stepper" id="reactionStepper">
+        <div class="step active" data-step="0">1. Núcleos Separados</div>
+        <div class="step" data-step="1">2. Disparo Térmico</div>
+        <div class="step" data-step="2">3. Barreira de Coulomb</div>
+        <div class="step" data-step="3">4. Força Forte (União!)</div>
+        <div class="step" data-step="4">5. Hélio + Energia</div>
+      </div>
+    </section>
+
+    <!-- Painel Direito: Telemetria e Equação Nuclear Formatada -->
+    <aside class="panel telemetry-panel">
+      <section class="telemetry-card equation-box">
+        <h2 id="rightTitle1">Equação da Fusão Nuclear</h2>
+        <div id="equationDisplay" class="equation-content"></div>
+      </section>
+
+      <section class="telemetry-card explanation-card">
+        <h2 id="rightTitle2">Barreira de Coulomb vs. Força Forte</h2>
+        <div class="explanation-box">
+          <p id="explanationText" class="explanation-text"></p>
+        </div>
+      </section>
+
+      <section class="telemetry-card">
+        <h2 id="rightTitle3">Balanço Térmico e Nuclear</h2>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel1">Temp. Atual / Mínima</span>
+            <strong id="metricTemp" class="metric-val">150 / 100 MK</strong>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel2">Energia Liberada (Q)</span>
+            <strong id="metricEnergy" class="metric-val energy-highlight">0.0 MeV</strong>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel3">Status da Barreira</span>
+            <strong id="metricBarrier" class="metric-val">Pronta p/ Vencer</strong>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel4">Conservação de Massa</span>
+            <strong id="metricConservation" class="metric-val">2 + 3 = 5</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="telemetry-card products-card">
+        <h2 id="rightTitle4">Produtos e Partilha de Energia</h2>
+        <div id="productsList" class="products-list">
+          <div class="empty-products">Dispare o núcleo para testar a Barreira de Coulomb.</div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="fusao.js"></script>
+</body>
+</html>

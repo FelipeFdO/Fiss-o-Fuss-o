@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="purple">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Fissão Nuclear — Átomo Único &amp; Reator em Cadeia</title>
+  <!-- Favicon SVG de Átomo Nuclear em Roxo/Violeta para a aba do navegador -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d0917'/%3E%3Cg fill='none' stroke='%23c084fc' stroke-width='3'%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' transform='rotate(30 32 32)'/%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' transform='rotate(-30 32 32)'/%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' transform='rotate(90 32 32)'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='6' fill='%23f43f5e'/%3E%3Ccircle cx='28' cy='30' r='2.5' fill='%2338bdf8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="fissao.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="28" height="28">
+          <g fill="none" stroke="currentColor" stroke-width="3.5">
+            <ellipse cx="32" cy="32" rx="26" ry="10" transform="rotate(30 32 32)"/>
+            <ellipse cx="32" cy="32" rx="26" ry="10" transform="rotate(-30 32 32)"/>
+            <ellipse cx="32" cy="32" rx="26" ry="10" transform="rotate(90 32 32)"/>
+          </g>
+          <circle cx="32" cy="32" r="6.5" fill="#f43f5e"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Simulador de Fissão Nuclear</h1>
+        <p class="subtitle" id="appSubtitle">Física Nuclear Interativa &bull; Modelo da Gota Líquida</p>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <a href="fusao.html" class="sim-switch-link" title="Ir para o Simulador de Fusão Nuclear">
+        ☀️ Ir para Fusão
+      </a>
+
+      <div class="theme-picker" id="themePicker" title="Escolher tema de cores">
+        <span class="theme-label">Tema:</span>
+        <button type="button" class="theme-swatch active" data-theme="purple" title="Roxo Quântico"></button>
+        <button type="button" class="theme-swatch" data-theme="indigo" title="Magenta Neon"></button>
+        <button type="button" class="theme-swatch" data-theme="blue" title="Azul Ciano"></button>
+        <button type="button" class="theme-swatch" data-theme="emerald" title="Verde Radioativo"></button>
+        <button type="button" class="theme-swatch" data-theme="amber" title="Âmbar Solar"></button>
+        <button type="button" class="theme-swatch" data-theme="crimson" title="Rubi Plasma"></button>
+      </div>
+
+      <div class="mode-tabs" id="modeTabs" role="tablist">
+        <button type="button" class="mode-tab active" data-mode="single" role="tab" aria-selected="true">
+          ⚛️ 1. Átomo Único
+        </button>
+        <button type="button" class="mode-tab" data-mode="chain" role="tab" aria-selected="false">
+          ⚡ 2. Reator em Cadeia
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- Painel Esquerdo: Controles -->
+    <aside class="panel controls-panel">
+      <!-- SEÇÃO 1 (Compartilhada): Combustível Nuclear -->
+      <section class="control-group">
+        <h2 id="fuelGroupTitle">1. Combustível Nuclear (Alvo)</h2>
+        
+        <div class="fuel-cards" id="fuelSelector">
+          <button type="button" class="fuel-card active" data-fuel="U235">
+            <div class="isotope-badge u-color">
+              <div class="iso-numbers">
+                <span>235</span>
+                <span>92</span>
+              </div>
+              <span class="iso-letter">U</span>
+            </div>
+            <div class="fuel-info">
+              <strong>Urânio-235</strong>
+              <span class="tag tag-fissile">Físsil</span>
+            </div>
+          </button>
+
+          <button type="button" class="fuel-card" data-fuel="Pu239">
+            <div class="isotope-badge pu-color">
+              <div class="iso-numbers">
+                <span>239</span>
+                <span>94</span>
+              </div>
+              <span class="iso-letter">Pu</span>
+            </div>
+            <div class="fuel-info">
+              <strong>Plutônio-239</strong>
+              <span class="tag tag-fissile">Físsil</span>
+            </div>
+          </button>
+
+          <button type="button" class="fuel-card" data-fuel="Th232">
+            <div class="isotope-badge th-color">
+              <div class="iso-numbers">
+                <span>232</span>
+                <span>90</span>
+              </div>
+              <span class="iso-letter">Th</span>
+            </div>
+            <div class="fuel-info">
+              <strong>Tório-232</strong>
+              <span class="tag tag-fertile">Fértil (2x)</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- CONTROLES EXCLUSIVOS DO MODO 1: ÁTOMO ÚNICO -->
+      <div id="singleModeControls" class="mode-controls-wrapper">
+        <section class="control-group">
+          <h2>2. Rota de Divisão (Produtos)</h2>
+          <select id="pathwaySelect" class="select-input"></select>
+          <p id="pathwayHint" class="helper-text">Escolha uma divisão específica ou deixe no sorteio realista.</p>
+        </section>
+
+        <section class="control-group control-group-expand">
+          <h2>3. Disparador de Partículas</h2>
+
+          <div class="segmented-control" id="projectileSelector">
+            <button type="button" class="seg-btn active" data-projectile="neutron">
+              <span class="dot neutron-dot"></span> Nêutron (n⁰)
+            </button>
+            <button type="button" class="seg-btn" data-projectile="proton">
+              <span class="dot proton-dot"></span> Próton (p⁺)
+            </button>
+          </div>
+          <p id="projectileHint" class="helper-text">
+            Sem carga elétrica: entra no núcleo sem sofrer repulsão.
+          </p>
+
+          <div class="sliders-container">
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="energySlider">Velocidade do Disparo</label>
+                <span id="energyValueLabel" class="value-pill">Térmico (Lento)</span>
+              </div>
+              <input type="range" id="energySlider" min="1" max="3" step="1" value="1">
+              <div class="slider-ticks">
+                <span>Térmico (0.025 eV)</span>
+                <span>Médio</span>
+                <span>Rápido (2 MeV)</span>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="aimSlider">Mira / Ângulo de Impacto</label>
+                <span id="aimValueLabel" class="value-pill">Centro (0°)</span>
+              </div>
+              <input type="range" id="aimSlider" min="-45" max="45" step="1" value="0">
+              <div class="slider-ticks">
+                <span>Acima (-45°)</span>
+                <span>Centro (0°)</span>
+                <span>Abaixo (+45°)</span>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="speedSlider">Câmera (Velocidade)</label>
+                <span id="speedValueLabel" class="value-pill">1.0x (Normal)</span>
+              </div>
+              <input type="range" id="speedSlider" min="0.25" max="1.5" step="0.25" value="1.0">
+              <div class="slider-ticks">
+                <span>0.25x (Câmera Lenta)</span>
+                <span>1.0x</span>
+                <span>1.5x</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button type="button" id="fireBtn" class="btn-fire">
+              🎯 DISPARAR
+            </button>
+            <button type="button" id="pauseBtn" class="btn-pause" title="Pausar ou continuar simulação (Atalho: Espaço)">
+              ⏸ Pausar
+            </button>
+            <button type="button" id="resetBtn" class="btn-reset" title="Reiniciar núcleo">
+              ↺ Resetar
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- CONTROLES EXCLUSIVOS DO MODO 2: REATOR EM CADEIA -->
+      <div id="chainModeControls" class="mode-controls-wrapper hidden">
+        <section class="control-group">
+          <h2>2. Núcleo do Reator (Massa Crítica)</h2>
+          <div class="slider-block">
+            <div class="slider-header">
+              <label for="atomCountSlider">Qtd. de Núcleos (5 a 150)</label>
+              <div class="atom-input-group">
+                <input type="number" id="atomCountInput" class="atom-num-input" min="5" max="150" step="1" value="50" title="Digite o número exato de átomos (5 a 150)">
+                <span class="unit-mini">átomos</span>
+              </div>
+            </div>
+            <input type="range" id="atomCountSlider" min="5" max="150" step="1" value="50">
+            <div class="preset-chips" id="atomPresetChips">
+              <button type="button" class="chip-btn" data-count="15" title="Poucos átomos: nêutrons escapam (Subcrítico)">15 (Baixa)</button>
+              <button type="button" class="chip-btn active" data-count="50" title="Densidade moderada">50 (Média)</button>
+              <button type="button" class="chip-btn" data-count="100" title="Dinâmica PhET do Guia de Aula: 100 núcleos!">100 (PhET)</button>
+              <button type="button" class="chip-btn" data-count="150" title="Alta densidade (150 núcleos)">150 (Máx)</button>
+            </div>
+          </div>
+
+          <div class="slider-block">
+            <div class="slider-header">
+              <label for="enrichmentSlider">Pureza / Enriquecimento</label>
+              <span id="enrichmentLabel" class="value-pill">100% Físsil</span>
+            </div>
+            <input type="range" id="enrichmentSlider" min="20" max="100" step="5" value="100">
+            <div class="slider-ticks">
+              <span>20% (Com ²³⁸U/²³²Th)</span>
+              <span>60%</span>
+              <span>100% Puro</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="control-group control-group-expand">
+          <h2>3. Controle da Reação em Cadeia</h2>
+
+          <div class="sliders-container">
+            <div class="slider-block">
+              <div class="slider-header">
+                <label>Operação da Usina</label>
+                <span id="autoModeBadge" class="value-pill">Manual</span>
+              </div>
+              <div class="segmented-control" id="autoRegulatorSelector">
+                <button type="button" class="seg-btn active" data-auto="off" title="Você controla as barras manualmente">🛠️ Manual</button>
+                <button type="button" class="seg-btn" data-auto="on" title="O reator regula as barras e repõe combustível sozinho para manter k_ef = 1">🤖 Auto (k = 1)</button>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label for="rodsSlider">Barras (Boro/Cádmio)</label>
+                <span id="rodsValueLabel" class="value-pill">25% Inseridas</span>
+              </div>
+              <input type="range" id="rodsSlider" min="0" max="100" step="1" value="25">
+              <div class="slider-ticks">
+                <span>0% (Potência Máx)</span>
+                <span>50%</span>
+                <span>100% (SCRAM)</span>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-header">
+                <label>Moderador &amp; Velocidade</label>
+                <span id="chainSpeedLabel" class="value-pill">1.0x</span>
+              </div>
+              <div class="mod-speed-row">
+                <div class="segmented-control compact-seg" id="moderatorSelector">
+                  <button type="button" class="seg-btn active" data-mod="on" title="Freia nêutrons rápidos para térmicos (alta captura no U-235)">💧 Com Mod.</button>
+                  <button type="button" class="seg-btn" data-mod="off" title="Sem moderador: nêutrons continuam rápidos e escapam mais">⚡ Sem Mod.</button>
+                </div>
+                <div class="mini-speed-box" title="Velocidade da simulação">
+                  <input type="range" id="chainSpeedSlider" min="0.2" max="1.5" step="0.1" value="1.0">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="scramBtn" class="btn-scram" title="Descer 100% das barras de controle imediatamente">
+            🛑 SCRAM (PARADA DE EMERGÊNCIA)
+          </button>
+
+          <div class="action-buttons">
+            <button type="button" id="fireChainBtn" class="btn-fire" title="Injetar um nêutron térmico no núcleo">
+              🎯 INJETAR n⁰
+            </button>
+            <button type="button" id="pauseChainBtn" class="btn-pause" title="Pausar ou continuar (Espaço)">
+              ⏸ Pausar
+            </button>
+            <button type="button" id="resetChainBtn" class="btn-reset" title="Recarregar núcleo do reator">
+              ↺ Resetar
+            </button>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <!-- Centro: Câmara de Visualização Canvas Proporcional -->
+    <section class="stage-container">
+      <div class="stage-overlay-top">
+        <div class="status-badge" id="stageStatusBadge">
+          Pronto para disparo
+        </div>
+        <div class="legend" id="stageLegend">
+          <span><i class="dot proton-dot"></i> Prótons (+)</span>
+          <span><i class="dot neutron-dot"></i> Nêutrons (0)</span>
+          <span><i class="dot gamma-dot"></i> Energia (γ)</span>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper" id="canvasWrapper">
+        <canvas id="simCanvas"></canvas>
+      </div>
+
+      <!-- Barra de Progresso Físico da Reação -->
+      <div class="reaction-stepper" id="reactionStepper">
+        <div class="step active" data-step="0">1. Alvo Estável</div>
+        <div class="step" data-step="1">2. Disparo</div>
+        <div class="step" data-step="2">3. Núcleo Composto</div>
+        <div class="step" data-step="3">4. Gota Líquida</div>
+        <div class="step" data-step="4">5. Cisão e Produtos</div>
+      </div>
+    </section>
+
+    <!-- Painel Direito: Telemetria e Equação Nuclear Formatada -->
+    <aside class="panel telemetry-panel">
+      <section class="telemetry-card equation-box">
+        <h2 id="rightTitle1">Equação da Reação Nuclear</h2>
+        <div id="equationDisplay" class="equation-content"></div>
+      </section>
+
+      <section class="telemetry-card">
+        <h2 id="rightTitle2">O que está acontecendo?</h2>
+        <p id="explanationText" class="explanation-text"></p>
+      </section>
+
+      <section class="telemetry-card">
+        <h2 id="rightTitle3">Balanço de Partículas e Energia</h2>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel1">Núcleo Atual</span>
+            <strong id="metricNucleus" class="metric-val">²³⁵U (92p, 143n)</strong>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel2">Energia Liberada (Q)</span>
+            <strong id="metricEnergy" class="metric-val energy-highlight">0.0 MeV</strong>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel3">Nêutrons Emitidos</span>
+            <strong id="metricNeutronsOut" class="metric-val">0</strong>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label" id="metricLabel4">Conservação de Massa</span>
+            <strong id="metricConservation" class="metric-val">235 = 235</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="telemetry-card products-card">
+        <h2 id="rightTitle4">Fragmentos e Subprodutos</h2>
+        <div id="productsList" class="products-list">
+          <div class="empty-products">Nenhum fragmento gerado ainda.</div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="fissao.js"></script>
+</body>
+</html>

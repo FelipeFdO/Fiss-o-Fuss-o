@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratório de Física Nuclear — Fissão vs. Fusão</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c0817'/%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' fill='none' stroke='%23c084fc' stroke-width='3' transform='rotate(30 32 32)'/%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' fill='none' stroke='%2338bdf8' stroke-width='3' transform='rotate(-30 32 32)'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23facc15'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg-dark: #0c0817;
+      --bg-card: #18112c;
+      --bg-card-hover: #22173e;
+      --border-subtle: rgba(192, 132, 252, 0.22);
+      --text-main: #f5f3ff;
+      --text-muted: #a799c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1d1238 0%, #090612 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .container {
+      max-width: 920px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .header-badge {
+      display: inline-block;
+      margin: 0 auto 0.5rem;
+      padding: 0.28rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(192, 132, 252, 0.15);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #d8b4fe;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.45;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .sim-card {
+      text-decoration: none;
+      color: inherit;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sim-card:hover {
+      transform: translateY(-4px);
+      background: var(--bg-card-hover);
+    }
+
+    .sim-card.fission:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.18);
+    }
+
+    .sim-card.fusion:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.18);
+    }
+
+    .icon-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .fission .icon-circle {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(147, 51, 234, 0.25));
+      border: 1px solid rgba(56, 189, 248, 0.45);
+    }
+
+    .fusion .icon-circle {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(244, 63, 94, 0.25));
+      border: 1px solid rgba(245, 158, 11, 0.45);
+    }
+
+    .sim-card h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .sim-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .features-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 0.2rem;
+    }
+
+    .pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(12, 8, 23, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+    }
+
+    .cta-btn {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: filter 0.15s ease;
+    }
+
+    .fission .cta-btn {
+      background: linear-gradient(135deg, #0ea5e9, #7c3aed);
+      color: #ffffff;
+    }
+
+    .fusion .cta-btn {
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <span class="header-badge">Laboratório Virtual Interativo</span>
+      <h1>Física Nuclear: Fissão vs. Fusão</h1>
+      <p class="subtitle">
+        Escolha um dos simuladores abaixo para explorar desde as forças nucleares de um único átomo até o funcionamento de reatores em cadeia, Tokamaks e lasers de confinamento inercial.
+      </p>
+    </header>
+
+    <div class="cards-grid">
+      <a href="fissao.html" class="sim-card fission">
+        <div class="icon-circle">⚛️</div>
+        <h2>Simulador de Fissão Nuclear</h2>
+        <p>
+          Divisão de núcleos pesados (Urânio-235, Plutônio-239 e Tório-232), Modelo da Gota Líquida e controle de Reação em Cadeia com Barras de Boro.
+        </p>
+        <div class="features-list">
+          <span class="pill">🔬 1. Átomo Único</span>
+          <span class="pill">⚡ 2. Reator em Cadeia</span>
+          <span class="pill">🤖 Modo Auto (k = 1)</span>
+        </div>
+        <div class="cta-btn">Abrir Simulador de Fissão &rarr;</div>
+      </a>
+
+      <a href="fusao.html" class="sim-card fusion">
+        <div class="icon-circle">☀️</div>
+        <h2>Simulador de Fusão Nuclear</h2>
+        <p>
+          União de núcleos leves (Deutério, Trítio e Hélio-3), duelo entre Barreira de Coulomb e Força Forte, Tokamak (ITER), Laser (NIF) e Fator Q.
+        </p>
+        <div class="features-list">
+          <span class="pill">🔬 1. Colisão &amp; Barreira</span>
+          <span class="pill">☀️ 2. Tokamak &amp; Laser</span>
+          <span class="pill">🧱 Manta de Lítio (⁶Li)</span>
+        </div>
+        <div class="cta-btn">Abrir Simulador de Fusão &rarr;</div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
