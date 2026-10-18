@@ -1149,20 +1149,45 @@ input[type="range"] {
 
 /* Mobile & Tablet Responsive Layout */
 @media (max-width: 1024px) {
+  html,
   body {
     height: auto;
+    max-width: 100vw;
+    overflow-x: hidden;
     overflow-y: auto;
   }
 
   .top-bar {
     height: auto;
     flex-wrap: wrap;
+    padding: 0.45rem 0.65rem;
     gap: 0.4rem;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.38rem;
+  }
+
+  .mode-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem;
+  }
+
+  .mode-tab {
+    justify-content: center;
+    padding: 0.36rem 0.4rem;
+    font-size: 0.7rem;
   }
 
   .workspace {
     grid-template-columns: 1fr;
     height: auto;
+    padding: 0.4rem 0.5rem;
   }
 
   .stage-container {
@@ -1170,10 +1195,86 @@ input[type="range"] {
   }
 
   .canvas-wrapper {
-    height: 330px;
+    height: 320px;
   }
 
   .legend {
     display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .top-bar {
+    padding: 0.38rem 0.55rem;
+    gap: 0.32rem;
+  }
+
+  .brand {
+    width: 100%;
+    gap: 0.45rem;
+  }
+
+  .brand-logo svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .brand h1 {
+    font-size: 0.86rem;
+  }
+
+  .subtitle {
+    display: none;
+  }
+
+  .sim-switch-link {
+    font-size: 0.66rem;
+    padding: 0.24rem 0.5rem;
+  }
+
+  .theme-picker {
+    padding: 0.18rem 0.45rem;
+    gap: 0.28rem;
+  }
+
+  .theme-label {
+    display: none;
+  }
+
+  .theme-swatch {
+    width: 14px;
+    height: 14px;
+  }
+
+  .mode-tab {
+    font-size: 0.66rem;
+    padding: 0.32rem 0.25rem;
+  }
+
+  .stage-overlay-top {
+    padding: 0.3rem 0.55rem;
+  }
+
+  .status-badge {
+    font-size: 0.63rem;
+    padding: 0.15rem 0.48rem;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .canvas-wrapper {
+    height: 270px;
+  }
+
+  .reaction-stepper .step {
+    font-size: 0.54rem;
+    padding: 0.28rem 0.1rem;
+    white-space: normal;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

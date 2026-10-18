@@ -73,8 +73,20 @@
 
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 1.55rem;
+      }
+      .subtitle {
+        font-size: 0.88rem;
+      }
     }
 
     .sim-card {
