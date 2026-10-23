@@ -311,6 +311,7 @@ function goToSlide(targetIdx) {
     else if (bSlide === 4 && idx >= 4 && idx <= 5) active = true;
     else if (bSlide === 6 && idx >= 6 && idx <= 7) active = true;
     else if (bSlide === 8 && idx === 8) active = true;
+    else if (bSlide === 9 && idx === 9) active = true;
     btn.classList.toggle('active', active);
   });
 
@@ -1916,13 +1917,439 @@ function renderCoulombPlotCanvas() {
 }
 
 // ----------------------------------------------------------------------------
-// 8. ENQUETE DO DEBATE FINAL (SLIDE 9)
+// 8. SIMULADOR SLIDE 9: GRÁFICO INTERATIVO DE ROSCA — MATRIZ & CONSUMO (BEN / IEA)
 // ----------------------------------------------------------------------------
-const pollVotes = { opt1: 0, opt2: 0, opt3: 0 };
+const consumptionDoughnutCanvas = document.getElementById('consumptionDoughnutCanvas');
+const cdCtx = consumptionDoughnutCanvas ? consumptionDoughnutCanvas.getContext('2d') : null;
+
+const DOUGHNUT_DATASETS = {
+  sectors: {
+    title: 'Onde o Brasil Gasta Energia? (Por Setor)',
+    subtitle: 'Fonte: BEN / EPE (Ministério de Minas e Energia)',
+    items: [
+      {
+        id: 'transp',
+        name: 'Transportes',
+        icon: '🚗',
+        pct: 33,
+        color: '#ef4444',
+        accentColor: '#fca5a5',
+        fuel: 'Óleo Diesel (43,4%), Gasolina e Etanol',
+        desc: 'Setor com maior dependência fóssil do Brasil. Caminhões de carga e ônibus respondem pela maior fatia das emissões diretas de CO₂.'
+      },
+      {
+        id: 'ind',
+        name: 'Indústria',
+        icon: '🏭',
+        pct: 32,
+        color: '#3b82f6',
+        accentColor: '#93c5fd',
+        fuel: 'Eletricidade (22%), Bagaço de Cana (21%), Carvão e Gás',
+        desc: 'Base da produção de aço, cimento, celulose e químicos. A descarbonização industrial exige eletrificação de fornos e hidrogênio verde.'
+      },
+      {
+        id: 'outros',
+        name: 'Outros (Comércio/Serviços)',
+        icon: '🏢',
+        pct: 19,
+        color: '#06b6d4',
+        accentColor: '#67e8f9',
+        fuel: 'Eletricidade para iluminação, climatização e servidores',
+        desc: 'Comércio, edifícios públicos, hospitais e a crescente expansão de infraestrutura para Data Centers e conectividade digital.'
+      },
+      {
+        id: 'res',
+        name: 'Residências',
+        icon: '🏠',
+        pct: 11,
+        color: '#eab308',
+        accentColor: '#fef08a',
+        fuel: 'Eletricidade (geladeiras, chuveiros) e GLP (Gás de cozinha)',
+        desc: 'Residências gastam apenas 11% de toda a energia do país. Apagar a luz é essencial, mas não resolve sozinho a crise climática!'
+      },
+      {
+        id: 'agro',
+        name: 'Agropecuária',
+        icon: '🌾',
+        pct: 5,
+        color: '#10b981',
+        accentColor: '#86efac',
+        fuel: 'Óleo Diesel em tratores, colheitadeiras e irrigação',
+        desc: 'Consumo direto de frotas agrícolas e motobombas para irrigação de lavouras em larga escala.'
+      }
+    ]
+  },
+  matrixBr: {
+    title: 'Matriz Energética Total do Brasil (BEN)',
+    subtitle: 'Consumo primário total: 48,4% renovável vs. 49,6% fóssil',
+    items: [
+      {
+        id: 'fossil_br',
+        name: 'Combustíveis Fósseis',
+        icon: '🛢️',
+        pct: 49.6,
+        color: '#ef4444',
+        accentColor: '#fca5a5',
+        fuel: 'Petróleo (35,7%), Gás Natural (10,5%), Carvão Mineral (3,4%)',
+        desc: 'Embora a rede elétrica seja limpa, transportes rodoviários e indústrias pesadas ainda queimam quase 50% em combustíveis fósseis.'
+      },
+      {
+        id: 'renov_br',
+        name: 'Fontes Renováveis',
+        icon: '🌱',
+        pct: 48.4,
+        color: '#10b981',
+        accentColor: '#86efac',
+        fuel: 'Biomassa de Cana (15,4%), Hidro (12,5%), Lenha (8,4%), Eólica/Solar (12,1%)',
+        desc: 'O Brasil é um oásis renovável no planeta graças às chuvas e à biomassa da cana, mais de 3× superior à média mundial (~15%).'
+      },
+      {
+        id: 'nuc_br',
+        name: 'Energia Nuclear',
+        icon: '⚛️',
+        pct: 1.4,
+        color: '#a855f7',
+        accentColor: '#d8b4fe',
+        fuel: 'Urânio Enriquecido a 3%–5% (Angra 1 e 2)',
+        desc: 'Gera eletricidade firme sem emissão de carbono com fator de capacidade superior a 90% na base do Sistema Interligado Nacional (SIN).'
+      }
+    ]
+  },
+  matrixWorld: {
+    title: 'Matriz Energética Mundial (IEA)',
+    subtitle: 'Cenário Global: 80% ainda dependente de queimar fósseis!',
+    items: [
+      {
+        id: 'fossil_w',
+        name: 'Combustíveis Fósseis',
+        icon: '🪨',
+        pct: 80.0,
+        color: '#ef4444',
+        accentColor: '#fca5a5',
+        fuel: 'Petróleo (31%), Carvão Mineral (27%), Gás Natural (22%)',
+        desc: '8 em cada 10 Joules consumidos na Terra ainda vêm de queima de carvão, óleo e gás, principais aceleradores do efeito estufa.'
+      },
+      {
+        id: 'renov_w',
+        name: 'Fontes Renováveis',
+        icon: '☀️',
+        pct: 15.0,
+        color: '#10b981',
+        accentColor: '#86efac',
+        fuel: 'Biomassa tradicional, Hidrelétricas, Solar e Eólica mundiais',
+        desc: 'Apesar do crescimento solar e eólico, a substituição da infraestrutura fóssil global ainda é um desafio monumental.'
+      },
+      {
+        id: 'nuc_w',
+        name: 'Energia Nuclear',
+        icon: '⚛️',
+        pct: 5.0,
+        color: '#a855f7',
+        accentColor: '#d8b4fe',
+        fuel: 'Mais de 410 reatores de fissão em operação no mundo',
+        desc: 'Gera eletricidade firme limpa para França, EUA, China e Japão. É nesse nicho que a futura Fusão Nuclear (ITER) pretende atuar!'
+      }
+    ]
+  }
+};
+
+const doughnutState = {
+  mode: 'sectors',
+  hoveredIndex: -1,
+  selectedIndex: -1,
+  offsets: [0, 0, 0, 0, 0]
+};
+
+function updateDoughnutDetailUI() {
+  const dataset = DOUGHNUT_DATASETS[doughnutState.mode];
+  const items = dataset.items;
+  const activeIdx = doughnutState.hoveredIndex >= 0 ? doughnutState.hoveredIndex : doughnutState.selectedIndex;
+
+  const titleEl = document.getElementById('doughnutDetailTitle');
+  const textEl = document.getElementById('doughnutDetailText');
+  const badgeEl = document.getElementById('doughnutActiveBadge');
+
+  if (activeIdx >= 0 && activeIdx < items.length) {
+    const it = items[activeIdx];
+    const deg = ((it.pct / 100) * 360).toFixed(1);
+    if (titleEl) {
+      titleEl.style.color = it.accentColor;
+      titleEl.innerHTML = `${it.icon} ${it.name}: <strong>${it.pct}% do Total</strong> (Ângulo de ${deg}°)`;
+    }
+    if (textEl) {
+      textEl.innerHTML = `<strong>Principal fonte / combustível:</strong> ${it.fuel}.<br>${it.desc}`;
+    }
+    if (badgeEl) {
+      badgeEl.textContent = `${it.name}: ${it.pct}%`;
+    }
+  } else {
+    if (titleEl) {
+      titleEl.style.color = '#38bdf8';
+      titleEl.textContent = `📊 ${dataset.title} (100% Consolidado)`;
+    }
+    if (textEl) {
+      textEl.innerHTML = `Passe o mouse ou toque nas fatias para inspecionar os combustíveis principais, percentuais e impactos socioeconômicos.`;
+    }
+    if (badgeEl) {
+      badgeEl.textContent = 'Passe o mouse ou toque nas fatias';
+    }
+  }
+
+  // Update sector buttons active state
+  document.querySelectorAll('#doughnutSectorBtns .pill-btn').forEach(btn => {
+    const idx = Number(btn.dataset.secIdx);
+    btn.classList.toggle('active', idx === activeIdx);
+  });
+}
+
+function handleDoughnutHit(clientX, clientY) {
+  if (!consumptionDoughnutCanvas) return;
+  const rect = consumptionDoughnutCanvas.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+
+  const W = consumptionDoughnutCanvas.width;
+  const H = consumptionDoughnutCanvas.height;
+  if (W === 0 || H === 0) return;
+
+  const cx = W * 0.35;
+  const cy = H * 0.50;
+  const outerR = Math.min(W * 0.28, H * 0.40);
+  const innerR = outerR * 0.52;
+
+  const dx = x - cx;
+  const dy = y - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+
+  if (dist < innerR || dist > outerR + 24) {
+    doughnutState.hoveredIndex = -1;
+    updateDoughnutDetailUI();
+    return;
+  }
+
+  // Angle from 12:00 (-PI / 2)
+  let angle = Math.atan2(dy, dx) - (-Math.PI / 2);
+  while (angle < 0) angle += Math.PI * 2;
+  angle = angle % (Math.PI * 2);
+
+  const dataset = DOUGHNUT_DATASETS[doughnutState.mode];
+  let curA = 0;
+  let hitIdx = -1;
+  for (let i = 0; i < dataset.items.length; i++) {
+    const span = (dataset.items[i].pct / 100) * (Math.PI * 2);
+    if (angle >= curA && angle < curA + span) {
+      hitIdx = i;
+      break;
+    }
+    curA += span;
+  }
+
+  doughnutState.hoveredIndex = hitIdx;
+  if (hitIdx >= 0) doughnutState.selectedIndex = hitIdx;
+  updateDoughnutDetailUI();
+}
+
+if (consumptionDoughnutCanvas) {
+  consumptionDoughnutCanvas.addEventListener('mousemove', e => handleDoughnutHit(e.clientX, e.clientY));
+  consumptionDoughnutCanvas.addEventListener('mouseleave', () => {
+    doughnutState.hoveredIndex = -1;
+    updateDoughnutDetailUI();
+  });
+  consumptionDoughnutCanvas.addEventListener('click', e => handleDoughnutHit(e.clientX, e.clientY));
+  consumptionDoughnutCanvas.addEventListener('touchstart', e => {
+    if (e.touches.length > 0) handleDoughnutHit(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+}
+
+// Mode toggle buttons (Sectors vs MatrixBr vs MatrixWorld)
+document.getElementById('doughnutModeBtns')?.addEventListener('click', e => {
+  const btn = e.target.closest('.pill-btn');
+  if (!btn) return;
+  document.querySelectorAll('#doughnutModeBtns .pill-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  doughnutState.mode = btn.dataset.dmode || 'sectors';
+  doughnutState.hoveredIndex = -1;
+  doughnutState.selectedIndex = -1;
+  doughnutState.offsets = [0, 0, 0, 0, 0];
+
+  // Show/hide sector shortcut buttons if in sectors mode
+  const secBtns = document.getElementById('doughnutSectorBtns');
+  if (secBtns) {
+    secBtns.style.display = doughnutState.mode === 'sectors' ? 'flex' : 'none';
+  }
+
+  updateDoughnutDetailUI();
+});
+
+// Sector shortcut buttons
+document.getElementById('doughnutSectorBtns')?.addEventListener('click', e => {
+  const btn = e.target.closest('.pill-btn');
+  if (!btn) return;
+  const idx = Number(btn.dataset.secIdx);
+  doughnutState.selectedIndex = idx;
+  doughnutState.hoveredIndex = idx;
+  updateDoughnutDetailUI();
+});
+
+function renderConsumptionDoughnutCanvas() {
+  if (!cdCtx || !consumptionDoughnutCanvas) return;
+  const W = consumptionDoughnutCanvas.width;
+  const H = consumptionDoughnutCanvas.height;
+  if (W === 0 || H === 0) return;
+
+  cdCtx.clearRect(0, 0, W, H);
+
+  const dataset = DOUGHNUT_DATASETS[doughnutState.mode];
+  const items = dataset.items;
+
+  const cx = W * 0.35;
+  const cy = H * 0.50;
+  const outerR = Math.min(W * 0.28, H * 0.40);
+  const innerR = outerR * 0.52;
+
+  let currentAngle = -Math.PI / 2;
+
+  while (doughnutState.offsets.length < items.length) doughnutState.offsets.push(0);
+
+  const activeIdx = doughnutState.hoveredIndex >= 0 ? doughnutState.hoveredIndex : doughnutState.selectedIndex;
+
+  const sliceMeta = items.map((item, idx) => {
+    const angleSpan = (item.pct / 100) * (Math.PI * 2);
+    const startA = currentAngle;
+    const endA = currentAngle + angleSpan;
+    const midA = (startA + endA) / 2;
+    currentAngle = endA;
+
+    const isTarget = (activeIdx === idx);
+    const targetOffset = isTarget ? 11 : 0;
+    doughnutState.offsets[idx] += (targetOffset - doughnutState.offsets[idx]) * 0.25;
+
+    return { item, startA, endA, midA, offset: doughnutState.offsets[idx], idx };
+  });
+
+  // Draw Slices
+  sliceMeta.forEach(s => {
+    const off = s.offset;
+    const ox = Math.cos(s.midA) * off;
+    const oy = Math.sin(s.midA) * off;
+
+    cdCtx.save();
+    cdCtx.beginPath();
+    cdCtx.arc(cx + ox, cy + oy, outerR + (off > 2 ? 4 : 0), s.startA, s.endA, false);
+    cdCtx.arc(cx + ox, cy + oy, innerR, s.endA, s.startA, true);
+    cdCtx.closePath();
+
+    cdCtx.fillStyle = s.item.color;
+    if (off > 3) {
+      cdCtx.shadowColor = s.item.color;
+      cdCtx.shadowBlur = 14;
+    }
+    cdCtx.fill();
+
+    cdCtx.lineWidth = 2.5;
+    cdCtx.strokeStyle = '#0f172a';
+    cdCtx.stroke();
+    cdCtx.restore();
+
+    // Arc text labels
+    const spanDeg = (s.item.pct / 100) * 360;
+    if (spanDeg > 15) {
+      const labelR = (innerR + outerR) / 2 + (s.offset > 2 ? 3 : 0);
+      const lx = cx + ox + Math.cos(s.midA) * labelR;
+      const ly = cy + oy + Math.sin(s.midA) * labelR;
+
+      cdCtx.fillStyle = '#ffffff';
+      cdCtx.font = 'bold 11px Segoe UI';
+      cdCtx.textAlign = 'center';
+      cdCtx.textBaseline = 'middle';
+      cdCtx.fillText(`${s.item.pct}%`, lx, ly);
+    }
+  });
+
+  // Center Hole
+  cdCtx.save();
+  cdCtx.beginPath();
+  cdCtx.arc(cx, cy, innerR - 2, 0, Math.PI * 2);
+  cdCtx.fillStyle = '#0f172a';
+  cdCtx.fill();
+  cdCtx.lineWidth = 2;
+  cdCtx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+  cdCtx.stroke();
+
+  if (activeIdx >= 0 && activeIdx < items.length) {
+    const act = items[activeIdx];
+    cdCtx.textAlign = 'center';
+    cdCtx.fillStyle = act.accentColor;
+    cdCtx.font = 'bold 17px Segoe UI';
+    cdCtx.fillText(act.icon, cx, cy - 12);
+
+    cdCtx.fillStyle = '#f8fafc';
+    cdCtx.font = 'bold 13px Segoe UI';
+    cdCtx.fillText(`${act.pct}%`, cx, cy + 5);
+
+    cdCtx.fillStyle = act.accentColor;
+    cdCtx.font = 'bold 9px Segoe UI';
+    const shortName = act.name.length > 13 ? act.name.slice(0, 11) + '..' : act.name;
+    cdCtx.fillText(shortName, cx, cy + 18);
+  } else {
+    cdCtx.textAlign = 'center';
+    cdCtx.fillStyle = '#38bdf8';
+    cdCtx.font = 'bold 15px Segoe UI';
+    cdCtx.fillText(doughnutState.mode === 'matrixWorld' ? '🌍' : '🏛️', cx, cy - 11);
+
+    cdCtx.fillStyle = '#f8fafc';
+    cdCtx.font = 'bold 11px Segoe UI';
+    cdCtx.fillText('100% Total', cx, cy + 4);
+
+    cdCtx.fillStyle = '#94a3b8';
+    cdCtx.font = '9px Segoe UI';
+    cdCtx.fillText(doughnutState.mode === 'matrixWorld' ? 'IEA (Mundo)' : 'BEN / EPE', cx, cy + 17);
+  }
+  cdCtx.restore();
+
+  // Draw Legend on the right side
+  const legendX = W * 0.68;
+  const startLegendY = Math.max(20, cy - (items.length * 28) / 2);
+
+  items.forEach((item, idx) => {
+    const ly = startLegendY + idx * 28;
+    const isAct = (idx === activeIdx);
+
+    // Color box
+    cdCtx.fillStyle = item.color;
+    cdCtx.beginPath();
+    cdCtx.roundRect(legendX - 16, ly - 6, 11, 11, 3);
+    cdCtx.fill();
+    if (isAct) {
+      cdCtx.strokeStyle = '#ffffff';
+      cdCtx.lineWidth = 1.5;
+      cdCtx.stroke();
+    }
+
+    // Label
+    cdCtx.textAlign = 'left';
+    cdCtx.textBaseline = 'middle';
+    cdCtx.fillStyle = isAct ? '#ffffff' : '#e2e8f0';
+    cdCtx.font = isAct ? 'bold 11px Segoe UI' : '10.5px Segoe UI';
+    cdCtx.fillText(`${item.icon} ${item.name}`, legendX + 2, ly);
+
+    // Percentage
+    cdCtx.fillStyle = isAct ? item.accentColor : '#94a3b8';
+    cdCtx.font = 'bold 11px Segoe UI';
+    cdCtx.textAlign = 'right';
+    cdCtx.fillText(`${item.pct}%`, W * 0.98, ly);
+  });
+}
+
+// ----------------------------------------------------------------------------
+// 9. ENQUETE DO DEBATE FINAL (SLIDE 10)
+// ----------------------------------------------------------------------------
+const pollVotes = { opt1: 0, opt2: 0, opt3: 0, opt4: 0 };
 
 function updatePollDisplay() {
-  const total = pollVotes.opt1 + pollVotes.opt2 + pollVotes.opt3;
-  ['opt1', 'opt2', 'opt3'].forEach((key, idx) => {
+  const total = pollVotes.opt1 + pollVotes.opt2 + pollVotes.opt3 + pollVotes.opt4;
+  ['opt1', 'opt2', 'opt3', 'opt4'].forEach((key, idx) => {
     const count = pollVotes[key];
     const pct = total > 0 ? Math.round((count / total) * 100) : 0;
     const fill = document.getElementById(`pollFill${idx + 1}`);
@@ -1946,6 +2373,7 @@ document.getElementById('resetPollBtn')?.addEventListener('click', () => {
   pollVotes.opt1 = 0;
   pollVotes.opt2 = 0;
   pollVotes.opt3 = 0;
+  pollVotes.opt4 = 0;
   updatePollDisplay();
 });
 
@@ -1958,7 +2386,8 @@ function resizeAllSlideCanvases() {
     fissionLoopCanvas,
     shieldCanvas,
     reactorDiagramCanvas,
-    coulombPlotCanvas
+    coulombPlotCanvas,
+    consumptionDoughnutCanvas
   ];
   canvases.forEach(c => {
     if (!c) return;
@@ -1977,6 +2406,7 @@ resizeAllSlideCanvases();
 updateCentrifugeUI();
 updateShieldUI();
 updateCoulombPlotUI();
+updateDoughnutDetailUI();
 
 // Check initial slide from URL
 const initialUrlParams = new URLSearchParams(window.location.search);
@@ -1998,6 +2428,7 @@ function animateSlideVisuals() {
   if (isScrollMode || currentSlideIndex === 3) renderShieldCanvas();
   if (isScrollMode || currentSlideIndex === 5) renderReactorDiagramCanvas();
   if (isScrollMode || currentSlideIndex === 6) renderCoulombPlotCanvas();
+  if (isScrollMode || currentSlideIndex === 8) renderConsumptionDoughnutCanvas();
 
   requestAnimationFrame(animateSlideVisuals);
 }
