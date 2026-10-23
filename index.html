@@ -34,12 +34,12 @@
     }
 
     .container {
-      max-width: 920px;
+      max-width: 1080px;
       width: 100%;
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 1.8rem;
+      gap: 1.6rem;
     }
 
     .header-badge {
@@ -108,6 +108,11 @@
       background: var(--bg-card-hover);
     }
 
+    .sim-card.lesson:hover {
+      border-color: #c084fc;
+      box-shadow: 0 12px 30px rgba(192, 132, 252, 0.22);
+    }
+
     .sim-card.fission:hover {
       border-color: #38bdf8;
       box-shadow: 0 12px 30px rgba(56, 189, 248, 0.18);
@@ -126,6 +131,11 @@
       align-items: center;
       justify-content: center;
       font-size: 2rem;
+    }
+
+    .lesson .icon-circle {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(56, 189, 248, 0.25));
+      border: 1px solid rgba(192, 132, 252, 0.5);
     }
 
     .fission .icon-circle {
@@ -177,6 +187,11 @@
       transition: filter 0.15s ease;
     }
 
+    .lesson .cta-btn {
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      color: #ffffff;
+    }
+
     .fission .cta-btn {
       background: linear-gradient(135deg, #0ea5e9, #7c3aed);
       color: #ffffff;
@@ -199,6 +214,20 @@
     </header>
 
     <div class="cards-grid">
+      <a href="aula.html" class="sim-card lesson">
+        <div class="icon-circle">🎓</div>
+        <h2>Aula Interativa &amp; Slides</h2>
+        <p>
+          Apresentação completa dividida em 3 Blocos: Ciclo do Urânio no Brasil (INB), Proteção Radiológica, Reatores PWR/BWR, Submarinos e Fusão no ITER com QR Codes.
+        </p>
+        <div class="features-list">
+          <span class="pill">🇧🇷 Ciclo INB &amp; Ultracentrífuga</span>
+          <span class="pill">🛡️ Blindagem α, β, γ</span>
+          <span class="pill">🏭 Diagrama PWR vs. BWR</span>
+        </div>
+        <div class="cta-btn">Abrir Apresentação da Aula &rarr;</div>
+      </a>
+
       <a href="fissao.html" class="sim-card fission">
         <div class="icon-circle">⚛️</div>
         <h2>Simulador de Fissão Nuclear</h2>

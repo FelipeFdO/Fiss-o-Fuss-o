@@ -7,6 +7,7 @@ Simuladores educacionais interativos desenvolvidos em **HTML5 Canvas, CSS3 e Jav
 ## 🌐 Acesse Online (GitHub Pages)
 
 - 🏠 **Portal Inicial (Menu dos Simuladores):** [https://felipefdo.github.io/Fiss-o-Fuss-o/](https://felipefdo.github.io/Fiss-o-Fuss-o/)
+- 🎓 **Aula Interativa & Slides (Usinas e Estrelas):** [https://felipefdo.github.io/Fiss-o-Fuss-o/aula.html](https://felipefdo.github.io/Fiss-o-Fuss-o/aula.html)
 - ⚛️ **Simulador de Fissão Nuclear:** [https://felipefdo.github.io/Fiss-o-Fuss-o/fissao.html](https://felipefdo.github.io/Fiss-o-Fuss-o/fissao.html)
 - ☀️ **Simulador de Fusão Nuclear:** [https://felipefdo.github.io/Fiss-o-Fuss-o/fusao.html](https://felipefdo.github.io/Fiss-o-Fuss-o/fusao.html)
 
@@ -64,7 +65,10 @@ Dividido em dois módulos interativos:
 ## 📁 Estrutura de Arquivos
 
 ```text
-├── index.html   # Portal inicial (Menu para escolher entre Fissão e Fusão)
+├── index.html   # Portal inicial (Menu para Aula Interativa, Fissão e Fusão)
+├── aula.html    # Apresentação Web Interativa (Modo Slides + Modo Apostila + QR Codes)
+├── aula.css     # Estilos e temas da Apresentação Interativa
+├── aula.js      # Simuladores embutidos nos slides (INB, Blindagem, PWR/BWR, Curva de Coulomb) e QR SVG
 ├── fissao.html  # Interface do Simulador de Fissão Nuclear
 ├── fissao.css   # Estilos e temas do Simulador de Fissão
 ├── fissao.js    # Motor físico e renderização Canvas da Fissão

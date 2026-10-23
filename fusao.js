@@ -2360,6 +2360,21 @@ resizeCanvas();
 populatePathways();
 resetCollision();
 
+const initParams = new URLSearchParams(window.location.search);
+const requestedTech = initParams.get('tech');
+if (requestedTech === 'tokamak' || requestedTech === 'laser') {
+  state.reactor.tech = requestedTech;
+}
+const requestedMode = initParams.get('mode');
+if (requestedMode === 'reactor' || requestedMode === 'collision') {
+  switchMode(requestedMode);
+}
+const requestedTheme = initParams.get('theme');
+if (requestedTheme && themePicker) {
+  const swatch = themePicker.querySelector(`[data-theme="${requestedTheme}"]`);
+  if (swatch) swatch.click();
+}
+
 function loop(timestamp) {
   updateSimulation();
   renderCanvas(timestamp);

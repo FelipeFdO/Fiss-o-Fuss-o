@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="purple">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fissão e Fusão Nuclear: A Física das Usinas e Estrelas — Aula Interativa</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c0817'/%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' fill='none' stroke='%23c084fc' stroke-width='3' transform='rotate(30 32 32)'/%3E%3Cellipse cx='32' cy='32' rx='26' ry='10' fill='none' stroke='%2338bdf8' stroke-width='3' transform='rotate(-30 32 32)'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23facc15'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="aula.css">
+</head>
+<body>
+  <!-- BARRA SUPERIOR DE NAVEGAÇÃO COMPACTA (44px) -->
+  <header class="top-bar">
+    <a href="index.html" class="brand" title="Voltar ao Portal Inicial">
+      <div class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="24" height="24">
+          <ellipse cx="32" cy="32" rx="26" ry="10" fill="none" stroke="currentColor" stroke-width="3.5" transform="rotate(30 32 32)"/>
+          <ellipse cx="32" cy="32" rx="26" ry="10" fill="none" stroke="#38bdf8" stroke-width="3.5" transform="rotate(-30 32 32)"/>
+          <circle cx="32" cy="32" r="6.5" fill="#facc15"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Fissão &amp; Fusão Nuclear</h1>
+        <p class="subtitle">Usinas e Estrelas &bull; 3º Ano EM</p>
+      </div>
+    </a>
+
+    <!-- Atalhos de Blocos da Aula -->
+    <nav class="block-nav" id="blockNav" aria-label="Blocos da Aula">
+      <button type="button" class="block-jump-btn active" data-target-slide="0" title="Capa e Estrutura da Aula">🏠 Capa</button>
+      <button type="button" class="block-jump-btn" data-target-slide="1" title="Bloco 1: A Origem, o Combustível e a Fissão">⚛️ Bloco 1: Fissão</button>
+      <button type="button" class="block-jump-btn" data-target-slide="4" title="Bloco 2: Domando a Fera (Reatores e Submarinos)">🏭 Bloco 2: Reatores</button>
+      <button type="button" class="block-jump-btn" data-target-slide="6" title="Bloco 3: O Poder das Estrelas (Fusão Nuclear e ITER)">☀️ Bloco 3: Fusão</button>
+      <button type="button" class="block-jump-btn" data-target-slide="8" title="Debate Final e Fontes Oficiais">💬 Debate &amp; Fontes</button>
+    </nav>
+
+    <div class="header-right">
+      <button type="button" id="viewModeToggleBtn" class="action-top-btn" title="Alternar entre Modo Slides (Projetor) e Modo Apostila (Rolagem contínua)">
+        📖 Modo Apostila
+      </button>
+
+      <button type="button" id="fullscreenBtn" class="action-top-btn" title="Entrar ou sair da Tela Cheia (F11)">
+        ⛶ Tela Cheia
+      </button>
+
+      <div class="theme-picker" id="themePicker" title="Escolher tema de cores">
+        <button type="button" class="theme-swatch active" data-theme="purple" title="Roxo Quântico"></button>
+        <button type="button" class="theme-swatch" data-theme="indigo" title="Magenta Neon"></button>
+        <button type="button" class="theme-swatch" data-theme="blue" title="Azul Ciano"></button>
+        <button type="button" class="theme-swatch" data-theme="emerald" title="Verde Radioativo"></button>
+        <button type="button" class="theme-swatch" data-theme="amber" title="Âmbar Solar"></button>
+        <button type="button" class="theme-swatch" data-theme="crimson" title="Rubi Plasma"></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ÁREA PRINCIPAL DOS SLIDES -->
+  <main class="deck-viewport" id="deckViewport">
+
+    <!-- ======================================================================
+         SLIDE 1: CAPA & ESTRUTURA DA AULA
+         ====================================================================== -->
+    <section class="slide active" data-slide-index="0" data-block="0">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill">Plano de Aula Interativo</span>
+            <span class="time-pill">🎯 Público-alvo: 3º Ano do Ensino Médio</span>
+            <span class="time-pill">⏱️ Duração estimada: 2 a 3 horas</span>
+          </div>
+          <h2 class="slide-title">Fissão e Fusão Nuclear: A Física das Usinas e Estrelas</h2>
+          <p class="slide-subtitle">
+            Objetivo: Desmistificar a energia nuclear, conectando extração no Brasil, proteção radiológica, engenharia de reatores e a fronteira da fusão nuclear (ITER).
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-banner">
+        <div>
+          <h2>Do Urânio de Caetité (BA) à Fornalha Estelar do ITER</h2>
+          <p>
+            Use as setas do teclado (<strong>&larr;</strong> / <strong>&rarr;</strong>) para conduzir a aula no projetor ou alterne para o <strong>Modo Apostila</strong> no topo. Em cada etapa, os alunos podem escanear os <strong>QR Codes</strong> para experimentar os simuladores no celular enquanto você demonstra na tela.
+          </p>
+          <div class="sim-btn-row" style="margin-top:0.65rem;">
+            <button type="button" class="btn-open-sim" data-goto-slide="1">
+              🚀 Iniciar Bloco 1: Extração e Fissão &rarr;
+            </button>
+            <button type="button" class="btn-secondary-sim" data-open-sim="fissao.html?mode=single" data-sim-title="Simulador de Fissão Nuclear">
+              ⚛️ Abrir Simulador de Fissão
+            </button>
+            <button type="button" class="btn-secondary-sim" data-open-sim="fusao.html?mode=collision" data-sim-title="Simulador de Fusão Nuclear">
+              ☀️ Abrir Simulador de Fusão
+            </button>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; align-items:center;">
+          <div class="qr-box" data-qr-url="https://felipefdo.github.io/Fiss-o-Fuss-o/aula.html" data-qr-label="Acompanhar Aula & Simuladores no Celular" title="Clique para ampliar o QR Code na tela"></div>
+          <span class="qr-zoom-hint">🔍 Clique no QR para ampliar</span>
+        </div>
+      </div>
+
+      <div class="blocks-overview-grid">
+        <div class="block-overview-card" data-goto-slide="1">
+          <div>
+            <span class="block-pill b1">Bloco 1 &bull; Slides 2 a 4</span>
+            <h3 style="margin-top:0.4rem;">A Origem, o Combustível e a Fissão</h3>
+            <ul style="margin-top:0.45rem;">
+              <li>🏢 <strong>1. Extração e Enriquecimento no Brasil:</strong> Caetité (BA), Yellowcake e ultracentrífugas em Resende (RJ) (0,7% &rarr; 3–5% <sup>235</sup>U).</li>
+              <li>⚛️ <strong>2. A Física da Fissão Nuclear:</strong> Colisão de nêutron lento no <sup>235</sup>U, Bário + Criptônio, <span class="math-inline"><i>E</i> = <i>m</i> &middot; <i>c</i><sup>2</sup></span> e reação em cadeia.</li>
+              <li>🛡️ <strong>3. Proteção Radiológica:</strong> Alfa (&alpha;), Beta (&beta;<sup>&minus;</sup>), Gama (&gamma;) e Nêutrons vs. Papel, Alumínio, Água, Chumbo e Concreto.</li>
+            </ul>
+          </div>
+          <span style="font-size:0.75rem; font-weight:700; color:#38bdf8;">Ir para o Bloco 1 &rarr;</span>
+        </div>
+
+        <div class="block-overview-card" data-goto-slide="4">
+          <div>
+            <span class="block-pill b2">Bloco 2 &bull; Slides 5 e 6</span>
+            <h3 style="margin-top:0.4rem;">Domando a Fera (Reatores e Submarinos)</h3>
+            <ul style="margin-top:0.45rem;">
+              <li>🎛️ <strong>1. Da Teoria à "Chaleira Gigante":</strong> Bomba (&gt;90% <sup>235</sup>U) vs. Reator controlado com barras de Boro/Cádmio e turbina a vapor.</li>
+              <li>🔄 <strong>2. Tipos de Reatores (BWR x PWR):</strong> Por que Angra dos Reis usa 2 circuitos isolados sob alta pressão (~150 atm)?</li>
+              <li>⚓ <strong>3. Submarinos Nucleares:</strong> PWRs embarcados sem ar, eletrólise de O<sub>2</sub>, dessalinização e meses de imersão.</li>
+            </ul>
+          </div>
+          <span style="font-size:0.75rem; font-weight:700; color:#c084fc;">Ir para o Bloco 2 &rarr;</span>
+        </div>
+
+        <div class="block-overview-card" data-goto-slide="6">
+          <div>
+            <span class="block-pill b3">Bloco 3 &bull; Slides 7 a 9</span>
+            <h3 style="margin-top:0.4rem;">O Poder das Estrelas (Fusão Nuclear)</h3>
+            <ul style="margin-top:0.45rem;">
+              <li>🌟 <strong>1. A Física da Fusão:</strong> Deutério + Trítio &rarr; Hélio + nêutron (4x mais energia por massa que a fissão).</li>
+              <li>🔥 <strong>2. Barreira de Coulomb e Plasma:</strong> Superando a repulsão positiva a 150 milhões °C (4º estado da matéria).</li>
+              <li>🧲 <strong>3 &amp; 4. Tokamaks (ITER) e Debate Final:</strong> Gaiola magnética toroidal, Fator <span class="math-inline"><i>Q</i> = 10</span> e os desafios do Trítio/Lítio.</li>
+            </ul>
+          </div>
+          <span style="font-size:0.75rem; font-weight:700; color:#fbbf24;">Ir para o Bloco 3 &rarr;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 2: BLOCO 1.1 — EXTRAÇÃO E ENRIQUECIMENTO NO BRASIL
+         ====================================================================== -->
+    <section class="slide" data-slide-index="1" data-block="1">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b1">Bloco 1: A Origem, o Combustível e a Fissão</span>
+            <span class="time-pill">Tópico 1.1 &bull; Ciclo do Combustível Nuclear (INB)</span>
+          </div>
+          <h2 class="slide-title">1. Extração e Enriquecimento de Urânio no Brasil</h2>
+          <p class="slide-subtitle">
+            O Brasil domina o ciclo completo: da mineração da uraninita na Bahia às cascatas de ultracentrífugas no Rio de Janeiro.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid">
+        <!-- Coluna Esquerda: Teoria do PDF -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>⛏️ Do Minério Bruto ao Yellowcake (Caetité - BA)</h3>
+            <p>
+              O Brasil é um dos poucos países que domina todo o ciclo do urânio, operado pelas <strong>Indústrias Nucleares do Brasil (INB)</strong>:
+            </p>
+            <ul>
+              <li><strong>Mineração e Lixiviação:</strong> A uraninita extraída na Bahia é tratada com ácido para gerar o <strong>Yellowcake</strong> (<span class="chem-tag">U<sub>3</sub>O<sub>8</sub></span>), pó concentrado de urânio natural.</li>
+              <li><strong>Composição Isotópica:</strong> O concentrado bruto possui <strong>99,3% de <sup>238</sup>U</strong> (inerte) e apenas <strong>0,7% de <sup>235</sup>U</strong> (físsil).</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>🌀 Enriquecimento Isotópico em Resende (RJ)</h3>
+            <p>
+              Na <strong>Fábrica de Combustível Nuclear (FCN)</strong>, a proporção de <sup>235</sup>U é aumentada para os reatores de Angra:
+            </p>
+            <ul>
+              <li><strong>Gás <span class="chem-tag">UF<sub>6</sub></span> e Ultracentrífugas:</strong> Girando a ~60.000 RPM, a inércia joga o <strong><sup>238</sup>U mais pesado</strong> para as bordas; o <strong><sup>235</sup>U mais leve</strong> fica no centro.</li>
+              <li><strong>Pastilha Cerâmica (<span class="chem-tag">UO<sub>2</sub></span>):</strong> O urânio enriquecido a <strong>3%–5% de <sup>235</sup>U</strong> vira pastilhas de 1 cm — cada uma equivale a 1 tonelada de carvão!</li>
+            </ul>
+          </div>
+
+          <div class="highlight-box" id="cycleStepExplanation">
+            <strong>💡 3. Ultracentrífugas em Resende (RJ):</strong> Convertido no gás UF₆ a ~60.000 RPM. O ²³⁸U (pesado) vai para a borda e o ²³⁵U (físsil) vai ao centro!
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Simulador Interativo do Ciclo & Ultracentrífuga -->
+        <div class="interactive-stage-card">
+          <div class="stage-top-row">
+            <h3>🏛️ Ciclo da INB &amp; Ultracentrífuga Isotópica</h3>
+            <span class="live-badge" id="centrifugeStatusBadge">Enriquecimento: 4,0% ²³⁵U (Angra)</span>
+          </div>
+
+          <!-- 4 Etapas do Ciclo no Brasil -->
+          <div class="step-cards-row" id="brazilCycleSteps">
+            <button type="button" class="cycle-step-btn" data-step="0">
+              <span class="cycle-step-num">1. Caetité (BA)</span>
+              <span class="cycle-step-title">⛏️ Uraninita</span>
+            </button>
+            <button type="button" class="cycle-step-btn" data-step="1">
+              <span class="cycle-step-num">2. Concentrado</span>
+              <span class="cycle-step-title">🟡 Yellowcake (0,7%)</span>
+            </button>
+            <button type="button" class="cycle-step-btn active" data-step="2">
+              <span class="cycle-step-num">3. Resende (RJ)</span>
+              <span class="cycle-step-title">🌀 Ultracentrífuga</span>
+            </button>
+            <button type="button" class="cycle-step-btn" data-step="3">
+              <span class="cycle-step-num">4. Angra 1 e 2</span>
+              <span class="cycle-step-title">🔋 Pastilha (3–5%)</span>
+            </button>
+          </div>
+
+          <div class="slide-canvas-box">
+            <canvas id="centrifugeCanvas"></canvas>
+          </div>
+
+          <div class="controls-strip">
+            <div class="control-Cluster" id="enrichmentPresetBtns">
+              <span class="control-label">Grau de ²³⁵U:</span>
+              <button type="button" class="pill-btn" data-enrich="0.7" data-rpm="0">0,7% (Natural)</button>
+              <button type="button" class="pill-btn active" data-enrich="4.0" data-rpm="55000">3–5% (Usina PWR)</button>
+              <button type="button" class="pill-btn" data-enrich="20.0" data-rpm="65000">20% (Submarino)</button>
+              <button type="button" class="pill-btn" data-enrich="90.0" data-rpm="75000">&gt;90% (Bomba)</button>
+            </div>
+            <div class="inline-slider-wrap">
+              <span class="control-label">Rotação:</span>
+              <input type="range" id="centrifugeRpmSlider" min="0" max="75000" step="2500" value="55000">
+              <span class="val-badge" id="centrifugeRpmLabel">55.000 RPM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 3: BLOCO 1.2 — A FÍSICA DA FISSÃO NUCLEAR & E = mc²
+         ====================================================================== -->
+    <section class="slide" data-slide-index="2" data-block="1">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b1">Bloco 1: A Origem, o Combustível e a Fissão</span>
+            <span class="time-pill">Tópico 1.2 &bull; Quebra do Núcleo &amp; Reação em Cadeia</span>
+          </div>
+          <h2 class="slide-title">2. A Física da Fissão Nuclear e a Equação de Einstein</h2>
+          <p class="slide-subtitle">
+            Como um único nêutron lento parte o núcleo de Urânio-235, converte massa em energia térmica e inicia uma reação em cadeia.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid">
+        <!-- Coluna Esquerda: Conceito + Equação + QR Code -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>💥 Como ocorre a Fissão do Urânio-235?</h3>
+            <ul>
+              <li><strong>Colisão com Nêutron Lento (Térmico):</strong> Um nêutron sem carga elétrica (<span class="math-inline">n<sup>0</sup></span>) aproxima-se sem sofrer repulsão elétrica e colide com o núcleo instável de <strong><sup>235</sup>U</strong>.</li>
+              <li><strong>Instabilidade e Cisão:</strong> O núcleo absorve o nêutron (virando <span class="chem-tag"><sup>236</sup>U*</span>), oscila como uma gota líquida e se parte em fragmentos menores — como <strong>Bário (<span class="chem-tag"><sup>141</sup>Ba</span>)</strong> e <strong>Criptônio (<span class="chem-tag"><sup>92</sup>Kr</span>)</strong> — liberando de <strong>2 a 3 novos nêutrons</strong> e imensa quantidade de calor (~200 MeV).</li>
+              <li><strong>Reação em Cadeia:</strong> Os novos nêutrons ejetados atingem outros átomos de urânio vizinhos. Em um reator, essa cascata é rigorosamente controlada para gerar um fluxo constante de calor.</li>
+            </ul>
+          </div>
+
+          <div class="formula-banner">
+            <div>
+              <strong style="font-size:0.82rem; color:#38bdf8; display:block;">Equivalência Massa-Energia (Albert Einstein)</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted);">
+                A soma das massas dos fragmentos + nêutrons é ~0,1% menor que a massa inicial. Essa perda de massa (<span class="math-inline">&Delta;<i>m</i></span>) vira energia!
+              </span>
+            </div>
+            <div class="formula-math"><i>E</i> = &Delta;<i>m</i> &middot; <i>c</i><sup>2</sup></div>
+          </div>
+
+          <!-- Card de QR Code + Simulador de Fissão -->
+          <div class="sim-launch-card">
+            <div>
+              <div class="qr-box" data-qr-url="https://felipefdo.github.io/Fiss-o-Fuss-o/fissao.html?mode=single" data-qr-label="Simulador de Fissão Nuclear — Átomo Único" title="Clique para ampliar o QR Code"></div>
+              <div class="qr-zoom-hint">🔍 Ampliar QR</div>
+            </div>
+            <div class="sim-launch-info">
+              <h4>🔬 Prática Interativa: Simulador de Fissão (Aba 1)</h4>
+              <p>
+                Dispare nêutrons térmicos ou prótons contra o <strong>Urânio-235</strong>, <strong>Plutônio-239</strong> e <strong>Tório-232</strong>. Observe a deformação da Gota Líquida e o balanço de massa.
+              </p>
+              <span class="sim-url-code">felipefdo.github.io/Fiss-o-Fuss-o/fissao.html</span>
+              <div class="sim-btn-row">
+                <button type="button" class="btn-open-sim" data-open-sim="fissao.html?mode=single" data-sim-title="Simulador de Fissão Nuclear — Átomo Único (U-235)">
+                  🎯 Abrir Simulador Aqui no Slide
+                </button>
+                <a href="fissao.html?mode=single" target="_blank" rel="noopener" class="btn-secondary-sim">
+                  ↗ Nova Aba
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Animação em Looping do Diagrama da Fissão e Cadeia -->
+        <div class="interactive-stage-card">
+          <div class="stage-top-row">
+            <h3>🔄 Recurso Visual: Diagrama em Looping da Fissão e Reação em Cadeia</h3>
+            <span class="live-badge" id="fissionLoopGenBadge">Geração 1 &rarr; 3 &rarr; 9 n⁰</span>
+          </div>
+
+          <div class="slide-canvas-box">
+            <canvas id="fissionLoopCanvas"></canvas>
+          </div>
+
+          <div class="controls-strip">
+            <div class="control-Cluster" id="fissionLoopModeBtns">
+              <span class="control-label">Visualização:</span>
+              <button type="button" class="pill-btn active" data-flmode="cascade">⚡ Cascata em Cadeia (1 &rarr; 3 &rarr; 9)</button>
+              <button type="button" class="pill-btn" data-flmode="single">🔬 Detalhe: ¹n + ²³⁵U &rarr; ¹⁴¹Ba + ⁹²Kr + 3n</button>
+            </div>
+            <button type="button" class="pill-btn" id="fissionLoopRestartBtn">↺ Reiniciar Pulso</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 4: BLOCO 1.3 — PROTEÇÃO RADIOLÓGICA (SIMULADOR DE BARREIRA)
+         ====================================================================== -->
+    <section class="slide" data-slide-index="3" data-block="1">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b1">Bloco 1: A Origem, o Combustível e a Fissão</span>
+            <span class="time-pill">Tópico 1.3 &bull; Tempo, Distância e Blindagem</span>
+          </div>
+          <h2 class="slide-title">3. Proteção Radiológica: Como nos defendemos?</h2>
+          <p class="slide-subtitle">
+            Poder de penetração das partículas Alfa (&alpha;), Beta (&beta;<sup>&minus;</sup>), Raios Gama (&gamma;) e Nêutrons (n<sup>0</sup>) e a blindagem em camadas das usinas.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid">
+        <!-- Coluna Esquerda: Teoria do PDF -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>☢️ Os Três Tipos Principais de Radiação + Nêutrons</h3>
+            <ul>
+              <li><strong>Partículas Alfa (&alpha; — <span class="chem-tag"><sup>4</sup><sub>2</sub>He<sup>2+</sup></span>):</strong> Núcleos de hélio pesados (2 prótons + 2 nêutrons) e de baixa penetração. São bloqueadas por uma simples <strong>folha de papel</strong> ou pela pele morta humana.</li>
+              <li><strong>Partículas Beta (&beta;<sup>&minus;</sup> — <span class="math-inline"><i>e</i><sup>&minus;</sup></span>):</strong> Elétrons em alta velocidade ejetados do núcleo, mais penetrantes. Exigem placas de <strong>alumínio</strong> ou acrílico para bloqueio seguro.</li>
+              <li><strong>Raios Gama (&gamma;) e Nêutrons (<span class="math-inline">n<sup>0</sup></span>):</strong> Ondas eletromagnéticas de altíssima energia e partículas sem carga que penetram profundamente na matéria. Exigem <strong>blindagem densa e espessa</strong>.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>🏰 A Blindagem Estratégica nas Usinas Nucleares</h3>
+            <p>Nas usinas, utiliza-se a combinação de três materiais complementares:</p>
+            <ul>
+              <li>💧 <strong>Água (<span class="chem-tag">H<sub>2</sub>O</span>):</strong> Rica em hidrogênio, atua como <strong>moderador de nêutrons</strong> (freia nêutrons por colisão elástica) e barreira primária de resfriamento.</li>
+              <li>🛡️ <strong>Chumbo (<span class="chem-tag">Pb</span>):</strong> Devido ao seu alto número atômico (<span class="math-inline"><i>Z</i> = 82</span>) e alta densidade (<span class="math-inline">11,3 g/cm<sup>3</sup></span>), absorve com grande eficiência os <strong>raios gama (&gamma;)</strong>.</li>
+              <li>🧱 <strong>Concreto Armado:</strong> A espessa <strong>"Blindagem Biológica"</strong> (1,5 a 2 metros) do edifício de contenção, que bloqueia qualquer radiação gama e nêutrons residuais.</li>
+            </ul>
+          </div>
+
+          <div class="highlight-box" id="shieldPhysicsNote">
+            <strong>📐 Lei da Atenuação Exponencial (Raios Gama):</strong> Diferente de Alfa e Beta (que têm alcance fixo), os fótons Gama sofrem atenuação probabilística <span class="math-inline"><i>I</i>(<i>x</i>) = <i>I</i><sub>0</sub> &middot; <i>e</i><sup>&minus;&mu;&middot;<i>x</i></sup></span>. Por isso a espessura (<span class="math-inline"><i>x</i></span>) e a densidade do material (<span class="math-inline">&mu;</span>) são decisivas!
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Simulador Paramétrico de Atenuação de Barreira (Pág. 2 e Pág. 5 do PDF) -->
+        <div class="interactive-stage-card">
+          <div class="stage-top-row">
+            <h3>🛡️ Simulador Paramétrico: Atenuação de Barreira Radiológica</h3>
+            <span class="live-badge" id="shieldTransmissionBadge">Transmissão no Detector: 0% (Bloqueado)</span>
+          </div>
+
+          <!-- Seleção de Partícula -->
+          <div class="controls-strip" style="padding:0.38rem 0.6rem;">
+            <div class="control-Cluster" id="shieldParticleBtns">
+              <span class="control-label">Radiação:</span>
+              <button type="button" class="pill-btn" data-part="alpha">🔴 Alfa (&alpha;)</button>
+              <button type="button" class="pill-btn" data-part="beta">🔵 Beta (&beta;⁻)</button>
+              <button type="button" class="pill-btn" data-part="gamma">🟡 Raios Gama (&gamma;)</button>
+              <button type="button" class="pill-btn" data-part="neutron">⚪ Nêutrons (n⁰)</button>
+              <button type="button" class="pill-btn active" data-part="all">🌈 Feixe Misto (Todos)</button>
+            </div>
+          </div>
+
+          <div class="slide-canvas-box">
+            <canvas id="shieldCanvas"></canvas>
+          </div>
+
+          <!-- Seleção de Material e Espessura -->
+          <div class="controls-strip">
+            <div class="control-Cluster" id="shieldMaterialBtns">
+              <span class="control-label">Barreira:</span>
+              <button type="button" class="pill-btn" data-mat="paper">📄 Papel</button>
+              <button type="button" class="pill-btn" data-mat="aluminum">💿 Alumínio</button>
+              <button type="button" class="pill-btn" data-mat="water">💧 Água</button>
+              <button type="button" class="pill-btn active" data-mat="lead">🛡️ Chumbo</button>
+              <button type="button" class="pill-btn" data-mat="concrete">🧱 Concreto Armado</button>
+            </div>
+            <div class="inline-slider-wrap">
+              <span class="control-label">Espessura:</span>
+              <input type="range" id="shieldThicknessSlider" min="10" max="100" step="5" value="65">
+              <span class="val-badge" id="shieldThicknessLabel">65% Espessura</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 5: BLOCO 2.1 — DA TEORIA À "CHALEIRA GIGANTE" (BOMBA VS REATOR)
+         ====================================================================== -->
+    <section class="slide" data-slide-index="4" data-block="2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b2">Bloco 2: Domando a Fera (Reatores e Submarinos)</span>
+            <span class="time-pill">Tópico 2.1 &bull; Controle da Reação em Cadeia</span>
+          </div>
+          <h2 class="slide-title">1. Da Teoria à "Chaleira Gigante": Bomba vs. Usina Nuclear</h2>
+          <p class="slide-subtitle">
+            Por que um reator nuclear comercial nunca pode explodir como uma bomba atômica? A física das barras de controle.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid equal-cols">
+        <!-- Coluna Esquerda: Bomba vs Reator e Chaleira Gigante -->
+        <div class="col-stack">
+          <div class="compare-grid">
+            <div class="compare-box danger">
+              <h4>💣 Bomba Nuclear (Projeto Manhattan)</h4>
+              <p style="font-size:0.76rem; color:var(--text-muted); line-height:1.38;">
+                Usa urânio <strong>altamente enriquecido (&gt;90% de <sup>235</sup>U)</strong> ou Plutônio-239 puro para uma reação em cadeia <strong>descontrolada (<span class="math-inline"><i>k</i> &gg; 1</span>)</strong> que libera toda a energia em microssegundos.
+              </p>
+            </div>
+            <div class="compare-box safe">
+              <h4>🏭 Reator de Usina (Angra 1 e 2)</h4>
+              <p style="font-size:0.76rem; color:var(--text-muted); line-height:1.38;">
+                Usa urânio <strong>levemente enriquecido (3% a 5% de <sup>235</sup>U)</strong> e <strong>Barras de Controle (Boro ou Cádmio)</strong> inseridas no núcleo para absorver nêutrons e manter <span class="math-inline"><i>k</i><sub>ef</sub> = 1,00</span>.
+              </p>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h3>🫖 O Conceito da "Chaleira Gigante" (Termodinâmica &rarr; Eletromagnetismo)</h3>
+            <p>
+              O funcionamento de uma usina nuclear é surpreendentemente analógico ao de uma termelétrica convencional — mudando apenas a fonte de calor:
+            </p>
+            <ul>
+              <li><strong>1. Energia Nuclear &rarr; Térmica:</strong> A fissão controlada do <sup>235</sup>U aquece a água ao redor do núcleo.</li>
+              <li><strong>2. Energia Térmica &rarr; Cinética (Mecânica):</strong> O calor ferve a água, gerando <strong>vapor sob altíssima pressão</strong> que gira as pás de uma turbina gigante.</li>
+              <li><strong>3. Energia Mecânica &rarr; Elétrica:</strong> O eixo da turbina rotaciona um <strong>gerador eletromagnético</strong> (indução de Faraday), enviando eletricidade para a rede.</li>
+            </ul>
+          </div>
+
+          <div class="highlight-box">
+            <strong>🛑 O que é o SCRAM (Parada de Emergência)?</strong> Se houver qualquer anomalia, eletroímãs soltam 100% das barras de controle de <strong>Boro/Cádmio</strong> por gravidade dentro do núcleo em menos de 2 segundos, absorvendo os nêutrons e interrompendo a reação em cadeia (<span class="math-inline"><i>k</i> &lt; 1</span>).
+          </div>
+        </div>
+
+        <!-- Coluna Direita: QR Code + Simulador de Reator em Cadeia (fissao.html?mode=chain) -->
+        <div class="col-stack">
+          <div class="sim-launch-card">
+            <div>
+              <div class="qr-box" style="width:118px; height:118px;" data-qr-url="https://felipefdo.github.io/Fiss-o-Fuss-o/fissao.html?mode=chain" data-qr-label="Simulador de Reator em Cadeia (Aba 2)" title="Clique para ampliar o QR Code"></div>
+              <div class="qr-zoom-hint">🔍 Ampliar QR para a Turma</div>
+            </div>
+            <div class="sim-launch-info">
+              <h4>⚡ Prática Interativa: Reator em Cadeia (Aba 2)</h4>
+              <p>
+                Controle um núcleo com até <strong>150 átomos de <sup>235</sup>U</strong> (ou o modo clássico de 100 átomos estilo PhET). Ajuste as <strong>Barras de Boro/Cádmio</strong>, ligue/desligue o <strong>Moderador de Água</strong>, ative o piloto automático <strong>🤖 Auto (<span class="math-inline"><i>k</i> = 1</span>)</strong> ou acione o <strong>🛑 SCRAM</strong>!
+              </p>
+              <span class="sim-url-code">felipefdo.github.io/Fiss-o-Fuss-o/fissao.html?mode=chain</span>
+              <div class="sim-btn-row">
+                <button type="button" class="btn-open-sim" data-open-sim="fissao.html?mode=chain" data-sim-title="Simulador de Fissão — Aba 2: Reator em Cadeia e Barras de Boro">
+                  🎛️ Abrir Reator em Cadeia Aqui no Slide
+                </button>
+                <a href="fissao.html?mode=chain" target="_blank" rel="noopener" class="btn-secondary-sim">
+                  ↗ Abrir em Nova Aba
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h3>🧪 Roteiro Rápido de Demonstração com a Turma</h3>
+            <ul>
+              <li><strong>Experimento 1 (Massa Subcrítica):</strong> Coloque apenas <strong>15 núcleos</strong> e injete um nêutron. Mostre como a maioria dos nêutrons escapa pelas bordas sem sustentar a reação.</li>
+              <li><strong>Experimento 2 (Sem Moderador vs. Com Moderador):</strong> Em <strong>100 núcleos</strong>, desligue o moderador (⚡ Sem Mod.) para mostrar que nêutrons rápidos têm baixa probabilidade de captura no <sup>235</sup>U.</li>
+              <li><strong>Experimento 3 (Controle Crítico <span class="math-inline"><i>k</i> = 1</span>):</strong> Ative o modo <strong>🤖 Auto (<span class="math-inline"><i>k</i> = 1</span>)</strong> e veja as barras descerem e subirem automaticamente para manter a potência estável!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 6: BLOCO 2.2 & 2.3 — TIPOS DE REATORES (BWR vs PWR) & SUBMARINOS
+         ====================================================================== -->
+    <section class="slide" data-slide-index="5" data-block="2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b2">Bloco 2: Domando a Fera (Reatores e Submarinos)</span>
+            <span class="time-pill">Tópicos 2.2 &amp; 2.3 &bull; Isolamento Radiológico &amp; Propulsão Naval</span>
+          </div>
+          <h2 class="slide-title">2. Tipos de Reatores (BWR x PWR) e Submarinos Nucleares</h2>
+          <p class="slide-subtitle">
+            O isolamento dos circuitos de água em Angra dos Reis (PWR) e como reatores embarcados operam meses submersos sem ar.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid">
+        <!-- Coluna Esquerda: BWR vs PWR + Submarinos -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>🔄 BWR vs. PWR: Como a água é aquecida e isolada?</h3>
+            <ul>
+              <li>
+                <strong>BWR (Reator de Água Fervente — 1 Circuito):</strong> A mesma água que resfria o urânio no núcleo ferve diretamente no vaso do reator e o vapor vai direto para a turbina. É mais simples, mas exige que o prédio da turbina possua isolamento radiológico.
+              </li>
+              <li>
+                <strong>PWR (Reator de Água Pressurizada — Angra 1, 2 e 3):</strong> O modelo mais seguro e mais usado no mundo. Possui <strong>circuitos isolados</strong>:
+                <br>• <em>Circuito Primário (Fechado):</em> A água do núcleo fica sob altíssima pressão (<span class="math-inline">~150 atm</span>) e atinge mais de <span class="math-inline">300 °C</span> <strong>sem ferver</strong>.
+                <br>• <em>Circuito Secundário (Limpo):</em> A água quente passa por tubos dentro do <strong>Gerador de Vapor</strong>, fervendo a água limpa do segundo tanque que gira a turbina. <strong>A água radioativa nunca toca na turbina!</strong>
+              </li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>⚓ 3. Curiosidade: Por que Submarinos Nucleares são tão furtivos?</h3>
+            <ul>
+              <li><strong>Sem Combustão (Sem Oxigênio):</strong> Submarinos a diesel precisam emergir (ou usar <em>snorkel</em>) para captar <span class="chem-tag">O<sub>2</sub></span> atmosférico para queimar combustível. Já os <strong>reatores PWR miniaturizados embarcados</strong> geram calor e eletricidade por fissão <strong>sem consumir ar</strong>!</li>
+              <li><strong>Autossuficiência Vital:</strong> A abundante energia elétrica do reator alimenta sistemas de <strong>dessalinização</strong> (água potável a partir do mar) e <strong>eletrólise da água</strong> (<span class="math-inline">2 H<sub>2</sub>O &rarr; 2 H<sub>2</sub> + O<sub>2</sub></span>), produzindo oxigênio puro para a tripulação respirar.</li>
+              <li><strong>Autonomia Extrema:</strong> O submarino pode permanecer <strong>meses submerso</strong>, limitado apenas pelo estoque de alimentos da tripulação!</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Diagrama Interativo Animado PWR vs BWR vs Submarino -->
+        <div class="interactive-stage-card">
+          <div class="stage-top-row">
+            <h3>🏭 Diagrama Interativo em Blocos: Circuitos PWR (Angra) vs. BWR</h3>
+            <span class="live-badge" id="reactorCircuitBadge">PWR: 2 Circuitos Isolados (150 atm)</span>
+          </div>
+
+          <div class="controls-strip" style="padding:0.38rem 0.6rem;">
+            <div class="control-Cluster" id="reactorTypeBtns">
+              <span class="control-label">Modelo:</span>
+              <button type="button" class="pill-btn active" data-rtype="pwr">🛡️ PWR (Angra dos Reis — 2 Circuitos)</button>
+              <button type="button" class="pill-btn" data-rtype="bwr">💨 BWR (Água Fervente — 1 Circuito)</button>
+              <button type="button" class="pill-btn" data-rtype="sub">⚓ Submarino PWR (Propulsão + O₂)</button>
+            </div>
+          </div>
+
+          <div class="slide-canvas-box">
+            <canvas id="reactorDiagramCanvas"></canvas>
+          </div>
+
+          <div class="controls-strip">
+            <div class="inline-slider-wrap">
+              <span class="control-label">Barras de Controle (Potência):</span>
+              <input type="range" id="diagramPowerSlider" min="0" max="100" step="5" value="80">
+              <span class="val-badge" id="diagramPowerLabel">80% Potência</span>
+            </div>
+            <button type="button" class="pill-btn active" id="highlightIsolationBtn">
+              🔍 Destacar Isolamento Radiológico
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 7: BLOCO 3.1 & 3.2 — FUSÃO NUCLEAR & BARREIRA DE COULOMB
+         ====================================================================== -->
+    <section class="slide" data-slide-index="6" data-block="3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b3">Bloco 3: O Poder das Estrelas (Fusão Nuclear)</span>
+            <span class="time-pill">Tópicos 3.1 &amp; 3.2 &bull; Barreira de Coulomb &amp; Plasma a 150 Milhões °C</span>
+          </div>
+          <h2 class="slide-title">1 &amp; 2. A Física da Fusão Nuclear, Barreira de Coulomb e o Plasma</h2>
+          <p class="slide-subtitle">
+            Unindo Deutério e Trítio: por que precisamos de 150 milhões de graus Celsius para vencer a repulsão elétrica?
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid">
+        <!-- Coluna Esquerda: Teoria + QR Code Colisão -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>☀️ 1. A Fornalha Estelar: Deutério + Trítio</h3>
+            <p>
+              Na década de 1920, físicos descobriram que as estrelas não "queimam oxigênio" — elas <strong>esmagam átomos</strong>. Diferente da fissão (quebra de núcleos pesados), a <strong>fusão une núcleos leves</strong>:
+            </p>
+            <ul>
+              <li>Na Terra, fundimos isótopos de hidrogênio — <strong>Deutério (<span class="chem-tag"><sup>2</sup><sub>1</sub>H</span>)</strong> e <strong>Trítio (<span class="chem-tag"><sup>3</sup><sub>1</sub>H</span>)</strong> — para formar <strong>Hélio (<span class="chem-tag"><sup>4</sup><sub>2</sub>He</span>)</strong>, ejetando um nêutron (<span class="math-inline"><sup>1</sup><sub>0</sub>n</span>) e liberando <span class="math-inline">17,6 MeV</span> (energia até <strong>4 vezes maior por massa</strong> que a fissão!).</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>⚡ 2. A Barreira de Coulomb e o 4º Estado da Matéria</h3>
+            <ul>
+              <li><strong>O Obstáculo Físico:</strong> Núcleos atômicos possuem carga positiva (<span class="math-inline">+</span>) e sofrem intensa <strong>repulsão eletromagnética (Barreira de Coulomb)</strong>. Para forçá-los a se unir, precisam colidir em altíssima velocidade para que a <strong>Força Nuclear Forte</strong> (de curtíssimo alcance) atue.</li>
+              <li><strong>150 Milhões °C (Plasma Ionizado):</strong> Sem a gravidade esmagadora do Sol, compensamos com temperaturas extremas (~10x o núcleo solar). Nessa temperatura, os elétrons se desprendem dos núcleos e o gás vira um <strong>plasma ionizado</strong>.</li>
+            </ul>
+          </div>
+
+          <div class="sim-launch-card">
+            <div>
+              <div class="qr-box" data-qr-url="https://felipefdo.github.io/Fiss-o-Fuss-o/fusao.html?mode=collision" data-qr-label="Simulador de Fusão — Aba 1: Colisão & Barreira de Coulomb" title="Clique para ampliar o QR Code"></div>
+              <div class="qr-zoom-hint">🔍 Ampliar QR</div>
+            </div>
+            <div class="sim-launch-info">
+              <h4>🔬 Simulador de Colisão &amp; Barreira de Coulomb (Aba 1)</h4>
+              <p>
+                Teste colisões de <strong>D+T</strong>, <strong>D+D</strong> e <strong>D+<sup>3</sup>He</strong> variando a temperatura de 10 a 160 Milhões K e o ângulo de impacto.
+              </p>
+              <div class="sim-btn-row">
+                <button type="button" class="btn-open-sim" data-open-sim="fusao.html?mode=collision" data-sim-title="Simulador de Fusão — Aba 1: Barreira de Coulomb vs. Força Forte">
+                  🔥 Abrir Simulador de Colisão no Slide
+                </button>
+                <a href="fusao.html?mode=collision" target="_blank" rel="noopener" class="btn-secondary-sim">
+                  ↗ Nova Aba
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Gráfico Interativo da Barreira de Coulomb / Curva de Tunelamento (Pág. 5 do PDF) -->
+        <div class="interactive-stage-card">
+          <div class="stage-top-row">
+            <h3>📈 Gráfico Interativo: Curva de Tunelamento &amp; Ignição Plasmática</h3>
+            <span class="live-badge" id="coulombPlotStatusBadge">150 M°C: Ignição Plasmática Ativa!</span>
+          </div>
+
+          <div class="slide-canvas-box">
+            <canvas id="coulombPlotCanvas"></canvas>
+          </div>
+
+          <div class="controls-strip">
+            <div class="control-Cluster" id="coulombTempPresets">
+              <button type="button" class="pill-btn" data-ctemp="25">25 M°C (Repulsão)</button>
+              <button type="button" class="pill-btn" data-ctemp="70">70 M°C (Tunelamento Baixo)</button>
+              <button type="button" class="pill-btn" data-ctemp="105">105 M°C (Limiar Ignição)</button>
+              <button type="button" class="pill-btn active" data-ctemp="150">150 M°C (Meta ITER)</button>
+            </div>
+            <div class="inline-slider-wrap">
+              <span class="control-label">Temperatura:</span>
+              <input type="range" id="coulombTempSlider" min="0" max="200" step="5" value="150">
+              <span class="val-badge" id="coulombTempLabel">150 M°C</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 8: BLOCO 3.3 — TOKAMAKS E O PROJETO ITER
+         ====================================================================== -->
+    <section class="slide" data-slide-index="7" data-block="3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b3">Bloco 3: O Poder das Estrelas (Fusão Nuclear)</span>
+            <span class="time-pill">Tópico 3.3 &bull; Confinamento Magnético &amp; Fator Q</span>
+          </div>
+          <h2 class="slide-title">3. Tokamaks, Confinamento Magnético e o Projeto ITER</h2>
+          <p class="slide-subtitle">
+            Como aprisionar um plasma a 150 milhões de graus sem derreter as paredes? A gaiola magnética toroidal e a busca por Q = 10.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid equal-cols">
+        <!-- Coluna Esquerda: Teoria do Tokamak e ITER -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>🧲 A "Gaiola Magnética": Como funciona um Tokamak?</h3>
+            <p>
+              Como armazenar algo a <strong>150 milhões de graus Celsius</strong> se qualquer material sólido na Terra derreteria instantaneamente ao tocá-lo?
+            </p>
+            <ul>
+              <li><strong>Força de Lorentz no Plasma:</strong> Como o plasma é um gás de partículas eletricamente carregadas (íons positivos de <span class="chem-tag">D<sup>+</sup> / T<sup>+</sup></span> e elétrons <span class="math-inline"><i>e</i><sup>&minus;</sup></span>), ele responde a campos magnéticos!</li>
+              <li><strong>Formato Toroidal (Donut):</strong> O <strong>Tokamak</strong> é uma câmara de vácuo em formato de rosca envolta em <strong>eletroímãs supercondutores gigantes</strong> (resfriados a <span class="math-inline">&minus;269 °C</span> com hélio líquido), que criam linhas de campo de até <strong>13 Tesla</strong> para levitar o plasma longe das paredes metálicas.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>🌍 O Projeto ITER (França) e o Fator <i>Q</i></h3>
+            <p>
+              O maior esforço científico global atual é o <strong>ITER</strong>, construído no sul da França por 35 países.
+            </p>
+            <ul>
+              <li>
+                <strong>O que é o Fator <span class="math-inline"><i>Q</i></span>?</strong> É a razão entre a potência gerada pela fusão (<span class="math-inline"><i>P</i><sub>fusão</sub></span>) e a potência externa injetada para aquecer o plasma (<span class="math-inline"><i>P</i><sub>injetada</sub></span>):
+              </li>
+              <li>
+                <strong>Meta do ITER (<span class="math-inline"><i>Q</i> = 10</span>):</strong> Superar com folga o ponto de equilíbrio (<span class="math-inline"><i>Q</i> &gt; 1</span>), gerando <strong>500 MW de potência de fusão</strong> a partir de apenas <strong>50 MW injetados</strong>! Após o ITER, o reator <strong>DEMO</strong> será o primeiro protótipo comercial.
+              </li>
+            </ul>
+          </div>
+
+          <div class="formula-banner">
+            <div>
+              <strong style="font-size:0.82rem; color:#fbbf24; display:block;">Equação do Ganho de Potência (Fator Q)</strong>
+              <span style="font-size:0.74rem; color:var(--text-muted);">
+                Meta do ITER: 500 MW gerados &divide; 50 MW injetados = <strong>Q = 10</strong>
+              </span>
+            </div>
+            <div class="formula-math">
+              <i>Q</i> =
+              <span class="math-frac">
+                <span class="frac-num"><i>P</i><sub>fusão</sub></span>
+                <span class="frac-den"><i>P</i><sub>injetada</sub></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: QR Code + Simulador do Tokamak ITER & Laser NIF (fusao.html?mode=reactor) -->
+        <div class="col-stack">
+          <div class="sim-launch-card">
+            <div>
+              <div class="qr-box" style="width:118px; height:118px;" data-qr-url="https://felipefdo.github.io/Fiss-o-Fuss-o/fusao.html?mode=reactor" data-qr-label="Simulador Tokamak (ITER) & Laser (NIF)" title="Clique para ampliar o QR Code"></div>
+              <div class="qr-zoom-hint">🔍 Ampliar QR para a Turma</div>
+            </div>
+            <div class="sim-launch-info">
+              <h4>☀️ Prática Interativa: Reator Tokamak ITER &amp; Laser NIF (Aba 2)</h4>
+              <p>
+                Visualize as partículas carregadas presas nas linhas de campo magnético do toroide! Ajuste o campo de <strong>0 a 15 Tesla</strong>, injete <strong>50 MW</strong> para atingir <span class="math-inline"><i>Q</i> = 10</span> (<strong>500 MW</strong>), ative a <strong>Manta Reprodutora de Lítio (<span class="chem-tag"><sup>6</sup>Li</span>)</strong> e simule uma falha nos ímãs (<strong>0 T</strong>)!
+              </p>
+              <span class="sim-url-code">felipefdo.github.io/Fiss-o-Fuss-o/fusao.html?mode=reactor</span>
+              <div class="sim-btn-row">
+                <button type="button" class="btn-open-sim" data-open-sim="fusao.html?mode=reactor" data-sim-title="Simulador de Fusão — Aba 2: Reator Tokamak (ITER) & Laser (NIF)">
+                  🧲 Abrir Simulador Tokamak Aqui no Slide
+                </button>
+                <a href="fusao.html?mode=reactor" target="_blank" rel="noopener" class="btn-secondary-sim">
+                  ↗ Abrir em Nova Aba
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h3>🔬 Destaques para Explorar no Simulador com os Alunos</h3>
+            <ul>
+              <li><strong>1. Segurança Passiva (Teste de Falha 0 T):</strong> Clique em <code>⚠️ FALHA (0 T)</code>. Mostre que há apenas ~1 grama de combustível no plasma: ao tocar na parede fria, ele esfria em milissegundos e a reação cessa sozinha (Zero <em>Meltdown</em>!).</li>
+              <li><strong>2. Manta de Lítio (<span class="chem-tag"><sup>6</sup>Li</span>):</strong> Observe os nêutrons (sem carga) escapando da gaiola magnética e batendo na parede de Lítio para fabricar novo Trítio (<span class="math-inline">n<sup>0</sup> + <sup>6</sup>Li &rarr; <sup>4</sup>He + <sup>3</sup>H</span>).</li>
+              <li><strong>3. Comparação com Laser (NIF):</strong> Alterne para o botão <code>⚡ Laser (NIF)</code> para mostrar o marco de 2022 (<span class="math-inline">2,05 MJ &rarr; 3,15 MJ</span>, <span class="math-inline"><i>Q</i><sub>alvo</sub> = 1,54</span>).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SLIDE 9: BLOCO 3.4 & REFERÊNCIAS — O DEBATE FINAL + FONTES OFICIAIS
+         ====================================================================== -->
+    <section class="slide" data-slide-index="8" data-block="3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-badge-row">
+            <span class="block-pill b3">Bloco 3.4 &amp; Encerramento</span>
+            <span class="time-pill">Debate em Sala &amp; Fontes Oficiais para os Alunos</span>
+          </div>
+          <h2 class="slide-title">4. O Debate Final: "A fusão está sempre a 30 anos de distância?"</h2>
+          <p class="slide-subtitle">
+            Pesando o sonho da energia limpa ilimitada contra os desafios reais da engenharia de materiais e do Trítio.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-grid equal-cols">
+        <!-- Coluna Esquerda: Prós vs Contras + Enquete da Turma -->
+        <div class="col-stack">
+          <div class="compare-grid">
+            <div class="compare-box safe">
+              <h4>🌟 Os Prós (O Sonho)</h4>
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:0.35rem; font-size:0.76rem; line-height:1.36;">
+                <li>✅ <strong>Combustível Abundante:</strong> O Deutério (<span class="chem-tag"><sup>2</sup>H</span>) é farto na água dos oceanos.</li>
+                <li>✅ <strong>Zero Risco de Meltdown:</strong> Se o confinamento falhar, o plasma apenas esfria e a reação cessa instantaneamente.</li>
+                <li>✅ <strong>Sem Lixo de Longa Vida:</strong> O produto direto é o gás Hélio (<span class="chem-tag"><sup>4</sup>He</span>), inerte e não-radioativo.</li>
+              </ul>
+            </div>
+
+            <div class="compare-box danger">
+              <h4>⚠️ Os Contras (O Desafio)</h4>
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:0.35rem; font-size:0.76rem; line-height:1.36;">
+                <li>🔧 <strong>Degradação por Nêutrons:</strong> O bombardeio intenso de nêutrons velozes (<span class="math-inline">14,1 MeV</span>) degrada e ativa as paredes metálicas internas.</li>
+                <li>🧪 <strong>Raridade do Trítio (<span class="chem-tag"><sup>3</sup>H</span>):</strong> Meia-vida curta (12,3 anos); obriga a "procriá-lo" dentro do reator bombardeando <strong>Lítio (<span class="chem-tag"><sup>6</sup>Li</span>)</strong>, encarecendo a máquina.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Enquete Interativa em Sala de Aula -->
+          <div class="content-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>🗳️ Placar do Debate da Turma: Será que vamos conseguir?</h3>
+              <button type="button" class="pill-btn" id="resetPollBtn" title="Zerar votos da turma">↺ Zerar Placar</button>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted);">
+              Clique nos botões abaixo para registrar os votos levantados pelos alunos em sala:
+            </p>
+            <div class="poll-bar-row" id="classroomPoll">
+              <div class="poll-item">
+                <button type="button" class="poll-btn" data-vote="opt1">+1 🚀 Sim, comercial até 2050!</button>
+                <div class="poll-track"><div class="poll-fill" id="pollFill1"></div></div>
+                <span class="poll-count" id="pollCount1">0 (0%)</span>
+              </div>
+              <div class="poll-item">
+                <button type="button" class="poll-btn" data-vote="opt2">+1 ⏳ Só depois de 2060–2070</button>
+                <div class="poll-track"><div class="poll-fill" id="pollFill2"></div></div>
+                <span class="poll-count" id="pollCount2">0 (0%)</span>
+              </div>
+              <div class="poll-item">
+                <button type="button" class="poll-btn" data-vote="opt3">+1 ⚛️ Focar em Fissão + Solar/Eólica</button>
+                <div class="poll-track"><div class="poll-fill" id="pollFill3"></div></div>
+                <span class="poll-count" id="pollCount3">0 (0%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Fontes Oficiais (Pág. 5 do PDF) + QR Code Geral -->
+        <div class="col-stack">
+          <div class="content-card">
+            <h3>📚 Fontes Oficiais e Referências para os Alunos</h3>
+            <p style="font-size:0.76rem; color:var(--text-muted);">
+              <em>Nota aos alunos:</em> O professor apresentou conceitos ilustrados e simulações para facilitar a compreensão física. Para imagens reais de instalações, diagramas de engenharia e dados técnicos, acessem os portais oficiais abaixo:
+            </p>
+            <div class="refs-grid" style="margin-top:0.2rem;">
+              <a href="https://www.inb.gov.br" target="_blank" rel="noopener" class="ref-link-card">
+                <strong>🏢 INB (inb.gov.br) &nearr;</strong>
+                <span>Indústrias Nucleares do Brasil: ciclo do urânio, mina de Caetité (BA) e enriquecimento em Resende (RJ).</span>
+              </a>
+              <a href="https://www.eletronuclear.gov.br" target="_blank" rel="noopener" class="ref-link-card">
+                <strong>⚡ Eletronuclear (eletronuclear.gov.br) &nearr;</strong>
+                <span>Diagramas reais dos circuitos do tipo PWR e informações técnicas sobre Angra 1, 2 e 3.</span>
+              </a>
+              <a href="https://www.iter.org" target="_blank" rel="noopener" class="ref-link-card">
+                <strong>☀️ Projeto ITER (iter.org) &nearr;</strong>
+                <span>Vídeos, fotos reais das paredes do Tokamak na França e explicação da fronteira da fusão.</span>
+              </a>
+              <a href="https://www.iaea.org" target="_blank" rel="noopener" class="ref-link-card">
+                <strong>🌐 IAEA (iaea.org) &nearr;</strong>
+                <span>Agência Internacional de Energia Atômica: relatórios mundiais sobre energia e proteção radiológica.</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="sim-launch-card">
+            <div>
+              <div class="qr-box" data-qr-url="https://felipefdo.github.io/Fiss-o-Fuss-o/" data-qr-label="Portal Completo: Aula + Simuladores de Fissão e Fusão" title="Clique para ampliar o QR Code"></div>
+              <div class="qr-zoom-hint">🔍 Ampliar QR</div>
+            </div>
+            <div class="sim-launch-info">
+              <h4>🌐 Acesse em Casa: Portal Completo no GitHub Pages</h4>
+              <p>
+                Escaneie o QR Code para acessar esta aula interativa e os simuladores completos de <strong>Fissão</strong> e <strong>Fusão Nuclear</strong> pelo celular ou computador.
+              </p>
+              <span class="sim-url-code">https://felipefdo.github.io/Fiss-o-Fuss-o/</span>
+              <div class="sim-btn-row">
+                <a href="index.html" class="btn-secondary-sim">🏠 Ir para o Menu Inicial</a>
+                <button type="button" class="btn-secondary-sim" data-goto-slide="0">↺ Voltar ao Slide 1</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ DE CONTROLE DOS SLIDES -->
+  <footer class="deck-footer">
+    <div class="nav-controls">
+      <button type="button" id="prevSlideBtn" class="slide-nav-btn" title="Slide Anterior (Seta Esquerda)">
+        &larr; Anterior
+      </button>
+      <button type="button" id="nextSlideBtn" class="slide-nav-btn primary" title="Próximo Slide (Seta Direita)">
+        Próximo &rarr;
+      </button>
+    </div>
+
+    <div class="slide-dots" id="slideDots" role="tablist" aria-label="Selecionar Slide"></div>
+
+    <div class="slide-counter-text" id="slideCounterText">
+      Slide 1 de 9 &bull; Use &larr; &rarr; para navegar
+    </div>
+  </footer>
+
+  <!-- MODAL (<dialog>) PARA ABRIR OS SIMULADORES DENTRO DO SLIDE -->
+  <dialog id="simModal" class="app-modal sim-modal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h3 id="simModalTitle">Simulador Interativo</h3>
+        <div class="modal-actions">
+          <a id="simModalExternalLink" href="fissao.html" target="_blank" rel="noopener" class="sim-switch-link">
+            ↗ Abrir em Nova Aba
+          </a>
+          <button type="button" id="closeSimModalBtn" class="modal-close-btn">
+            ✕ Fechar Simulador (Esc)
+          </button>
+        </div>
+      </div>
+      <iframe id="simModalIframe" class="sim-iframe" src="about:blank" title="Simulador Nuclear Embutido"></iframe>
+    </div>
+  </dialog>
+
+  <!-- MODAL (<dialog>) PARA AMPLIAR O QR CODE PARA A TURMA -->
+  <dialog id="qrModal" class="app-modal qr-modal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h3 id="qrModalTitle">Aponte a Câmera do Celular</h3>
+        <button type="button" id="closeQrModalBtn" class="modal-close-btn">✕ Fechar</button>
+      </div>
+      <div class="qr-modal-body">
+        <div id="qrModalLargeBox" class="qr-modal-box"></div>
+        <p id="qrModalUrlText" class="sim-url-code" style="font-size:0.86rem;"></p>
+        <p style="font-size:0.8rem; color:var(--text-muted);">
+          Escaneie o código acima para abrir o simulador diretamente no navegador do seu celular.
+        </p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="aula.js"></script>
+</body>
+</html>

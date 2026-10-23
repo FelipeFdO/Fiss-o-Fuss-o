@@ -2307,6 +2307,17 @@ resizeCanvas();
 populatePathways();
 resetAtom(false);
 
+const initParams = new URLSearchParams(window.location.search);
+const requestedMode = initParams.get('mode');
+if (requestedMode === 'chain' || requestedMode === 'single') {
+  switchMode(requestedMode);
+}
+const requestedTheme = initParams.get('theme');
+if (requestedTheme && themePicker) {
+  const swatch = themePicker.querySelector(`[data-theme="${requestedTheme}"]`);
+  if (swatch) swatch.click();
+}
+
 function loop(timestamp) {
   updateSimulation();
   renderCanvas(timestamp);
