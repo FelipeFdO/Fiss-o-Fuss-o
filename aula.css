@@ -374,8 +374,26 @@ body.scroll-mode .deck-viewport {
   height: 100%;
   min-height: 0;
   padding: 0.7rem 1.35rem 0.65rem;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-main) rgba(0, 0, 0, 0.2);
   animation: slideFadeIn 0.22s ease-out;
+}
+
+.slide::-webkit-scrollbar {
+  width: 6px;
+}
+
+.slide::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
+
+.slide::-webkit-scrollbar-thumb {
+  background: var(--accent-main);
+  border-radius: 999px;
+  opacity: 0.7;
 }
 
 .slide.active {
@@ -1416,22 +1434,52 @@ dialog.qr-modal {
   height: 100%;
 }
 
-/* Responsividade para telas menores / Celular dos alunos */
-@media (max-width: 1024px) {
+/* Responsividade para telas menores, celular dos alunos e computadores com Zoom Alto (125%-175%) */
+@media (max-width: 1140px), (max-height: 680px) {
   body {
-    height: auto;
-    min-height: 100vh;
-    overflow-y: auto;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .deck-viewport {
+    height: 100%;
+    min-height: 0;
   }
   .slide {
-    overflow: visible;
-    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    padding: 0.75rem 1.1rem 1.4rem;
+  }
+  .slide.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
   }
   .slide-grid,
   .slide-grid.equal-cols,
   .blocks-overview-grid {
-    grid-template-columns: 1fr;
-    height: auto;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: fit-content !important;
+    gap: 1rem;
+  }
+  .col-stack,
+  .interactive-stage-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: fit-content !important;
+    gap: 0.8rem !important;
+  }
+  .content-card {
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: fit-content !important;
   }
   .hero-banner {
     grid-template-columns: 1fr;
@@ -1444,6 +1492,8 @@ dialog.qr-modal {
   }
   .slide-canvas-box {
     min-height: 240px;
+    height: 260px;
+    flex: 0 0 auto;
   }
 }
 

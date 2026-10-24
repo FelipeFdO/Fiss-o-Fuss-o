@@ -290,6 +290,7 @@ function goToSlide(targetIdx) {
     slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else {
     slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    if (slides[idx]) slides[idx].scrollTop = 0;
   }
 
   // Update footer dots and buttons
@@ -2112,11 +2113,31 @@ function handleDoughnutHit(clientX, clientY) {
   const H = consumptionDoughnutCanvas.height;
   if (W === 0 || H === 0) return;
 
-  const cx = W * 0.35;
-  const cy = H * 0.50;
-  const outerR = Math.min(W * 0.28, H * 0.40);
-  const innerR = outerR * 0.52;
+  const dataset = DOUGHNUT_DATASETS[doughnutState.mode];
+  const items = dataset.items;
 
+  const cx = W * 0.34;
+  const cy = H * 0.50;
+  const outerR = Math.min(W * 0.26, H * 0.44);
+  const innerR = outerR * 0.54;
+
+  const legendX = W * 0.58;
+  const legendW = W * 0.39;
+  const itemH = Math.min(32, Math.max(22, (H - 20) / items.length));
+  const startLegendY = Math.max(10, cy - (items.length * itemH) / 2);
+
+  // Check legend hover first
+  if (x >= legendX - 10 && x <= legendX + legendW && y >= startLegendY && y <= startLegendY + items.length * itemH) {
+    const lIdx = Math.floor((y - startLegendY) / itemH);
+    if (lIdx >= 0 && lIdx < items.length) {
+      doughnutState.hoveredIndex = lIdx;
+      doughnutState.selectedIndex = lIdx;
+      updateDoughnutDetailUI();
+      return;
+    }
+  }
+
+  // Check doughnut ring hover
   const dx = x - cx;
   const dy = y - cy;
   const dist = Math.sqrt(dx * dx + dy * dy);
@@ -2132,11 +2153,10 @@ function handleDoughnutHit(clientX, clientY) {
   while (angle < 0) angle += Math.PI * 2;
   angle = angle % (Math.PI * 2);
 
-  const dataset = DOUGHNUT_DATASETS[doughnutState.mode];
   let curA = 0;
   let hitIdx = -1;
-  for (let i = 0; i < dataset.items.length; i++) {
-    const span = (dataset.items[i].pct / 100) * (Math.PI * 2);
+  for (let i = 0; i < items.length; i++) {
+    const span = (items[i].pct / 100) * (Math.PI * 2);
     if (angle >= curA && angle < curA + span) {
       hitIdx = i;
       break;
@@ -2203,10 +2223,10 @@ function renderConsumptionDoughnutCanvas() {
   const dataset = DOUGHNUT_DATASETS[doughnutState.mode];
   const items = dataset.items;
 
-  const cx = W * 0.35;
+  const cx = W * 0.34;
   const cy = H * 0.50;
-  const outerR = Math.min(W * 0.28, H * 0.40);
-  const innerR = outerR * 0.52;
+  const outerR = Math.min(W * 0.26, H * 0.44);
+  const innerR = outerR * 0.54;
 
   let currentAngle = -Math.PI / 2;
 
@@ -2222,7 +2242,7 @@ function renderConsumptionDoughnutCanvas() {
     currentAngle = endA;
 
     const isTarget = (activeIdx === idx);
-    const targetOffset = isTarget ? 11 : 0;
+    const targetOffset = isTarget ? 10 : 0;
     doughnutState.offsets[idx] += (targetOffset - doughnutState.offsets[idx]) * 0.25;
 
     return { item, startA, endA, midA, offset: doughnutState.offsets[idx], idx };
@@ -2236,7 +2256,7 @@ function renderConsumptionDoughnutCanvas() {
 
     cdCtx.save();
     cdCtx.beginPath();
-    cdCtx.arc(cx + ox, cy + oy, outerR + (off > 2 ? 4 : 0), s.startA, s.endA, false);
+    cdCtx.arc(cx + ox, cy + oy, outerR + (off > 2 ? 3 : 0), s.startA, s.endA, false);
     cdCtx.arc(cx + ox, cy + oy, innerR, s.endA, s.startA, true);
     cdCtx.closePath();
 
@@ -2254,8 +2274,8 @@ function renderConsumptionDoughnutCanvas() {
 
     // Arc text labels
     const spanDeg = (s.item.pct / 100) * 360;
-    if (spanDeg > 15) {
-      const labelR = (innerR + outerR) / 2 + (s.offset > 2 ? 3 : 0);
+    if (spanDeg > 18) {
+      const labelR = (innerR + outerR) / 2 + (s.offset > 2 ? 2 : 0);
       const lx = cx + ox + Math.cos(s.midA) * labelR;
       const ly = cy + oy + Math.sin(s.midA) * labelR;
 
@@ -2274,33 +2294,35 @@ function renderConsumptionDoughnutCanvas() {
   cdCtx.fillStyle = '#0f172a';
   cdCtx.fill();
   cdCtx.lineWidth = 2;
-  cdCtx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+  cdCtx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
   cdCtx.stroke();
 
   if (activeIdx >= 0 && activeIdx < items.length) {
     const act = items[activeIdx];
     cdCtx.textAlign = 'center';
+    cdCtx.textBaseline = 'middle';
     cdCtx.fillStyle = act.accentColor;
-    cdCtx.font = 'bold 17px Segoe UI';
-    cdCtx.fillText(act.icon, cx, cy - 12);
+    cdCtx.font = 'bold 16px Segoe UI';
+    cdCtx.fillText(act.icon, cx, cy - 13);
 
     cdCtx.fillStyle = '#f8fafc';
-    cdCtx.font = 'bold 13px Segoe UI';
-    cdCtx.fillText(`${act.pct}%`, cx, cy + 5);
+    cdCtx.font = 'bold 14px Segoe UI';
+    cdCtx.fillText(`${act.pct}%`, cx, cy + 3);
 
     cdCtx.fillStyle = act.accentColor;
     cdCtx.font = 'bold 9px Segoe UI';
-    const shortName = act.name.length > 13 ? act.name.slice(0, 11) + '..' : act.name;
-    cdCtx.fillText(shortName, cx, cy + 18);
+    const shortName = act.name.length > 13 ? act.name.slice(0, 11) + '…' : act.name;
+    cdCtx.fillText(shortName, cx, cy + 17);
   } else {
     cdCtx.textAlign = 'center';
+    cdCtx.textBaseline = 'middle';
     cdCtx.fillStyle = '#38bdf8';
     cdCtx.font = 'bold 15px Segoe UI';
-    cdCtx.fillText(doughnutState.mode === 'matrixWorld' ? '🌍' : '🏛️', cx, cy - 11);
+    cdCtx.fillText(doughnutState.mode === 'matrixWorld' ? '🌍' : '🏛️', cx, cy - 12);
 
     cdCtx.fillStyle = '#f8fafc';
-    cdCtx.font = 'bold 11px Segoe UI';
-    cdCtx.fillText('100% Total', cx, cy + 4);
+    cdCtx.font = 'bold 12px Segoe UI';
+    cdCtx.fillText('100% Total', cx, cy + 3);
 
     cdCtx.fillStyle = '#94a3b8';
     cdCtx.font = '9px Segoe UI';
@@ -2308,37 +2330,54 @@ function renderConsumptionDoughnutCanvas() {
   }
   cdCtx.restore();
 
-  // Draw Legend on the right side
-  const legendX = W * 0.68;
-  const startLegendY = Math.max(20, cy - (items.length * 28) / 2);
+  // Draw Legend on the right side - modern glassmorphic dashboard cards
+  const legendX = W * 0.58;
+  const legendW = W * 0.39;
+  const itemH = Math.min(32, Math.max(22, (H - 20) / items.length));
+  const cardH = itemH - 4;
+  const startLegendY = Math.max(10, cy - (items.length * itemH) / 2);
 
   items.forEach((item, idx) => {
-    const ly = startLegendY + idx * 28;
+    const ly = startLegendY + idx * itemH;
     const isAct = (idx === activeIdx);
 
-    // Color box
-    cdCtx.fillStyle = item.color;
+    // Card background badge
+    cdCtx.save();
     cdCtx.beginPath();
-    cdCtx.roundRect(legendX - 16, ly - 6, 11, 11, 3);
+    cdCtx.roundRect(legendX - 8, ly, legendW, cardH, 6);
+    cdCtx.fillStyle = isAct ? 'rgba(56, 189, 248, 0.18)' : 'rgba(15, 23, 42, 0.55)';
+    cdCtx.fill();
+    cdCtx.lineWidth = isAct ? 1.5 : 1;
+    cdCtx.strokeStyle = isAct ? item.accentColor : 'rgba(148, 163, 184, 0.18)';
+    cdCtx.stroke();
+
+    // Color swatch indicator
+    const cyCard = ly + cardH / 2;
+    cdCtx.beginPath();
+    cdCtx.roundRect(legendX - 1, cyCard - 5, 10, 10, 3);
+    cdCtx.fillStyle = item.color;
     cdCtx.fill();
     if (isAct) {
-      cdCtx.strokeStyle = '#ffffff';
       cdCtx.lineWidth = 1.5;
+      cdCtx.strokeStyle = '#ffffff';
       cdCtx.stroke();
     }
 
-    // Label
+    // Name + icon
     cdCtx.textAlign = 'left';
     cdCtx.textBaseline = 'middle';
-    cdCtx.fillStyle = isAct ? '#ffffff' : '#e2e8f0';
+    cdCtx.fillStyle = isAct ? '#ffffff' : '#cbd5e1';
     cdCtx.font = isAct ? 'bold 11px Segoe UI' : '10.5px Segoe UI';
-    cdCtx.fillText(`${item.icon} ${item.name}`, legendX + 2, ly);
+    const maxChars = Math.floor((legendW - 65) / 6.5);
+    const itemLabel = item.name.length > maxChars ? item.name.slice(0, maxChars - 1) + '…' : item.name;
+    cdCtx.fillText(`${item.icon} ${itemLabel}`, legendX + 14, cyCard);
 
-    // Percentage
+    // Percentage pill badge on the far right
+    cdCtx.textAlign = 'right';
     cdCtx.fillStyle = isAct ? item.accentColor : '#94a3b8';
     cdCtx.font = 'bold 11px Segoe UI';
-    cdCtx.textAlign = 'right';
-    cdCtx.fillText(`${item.pct}%`, W * 0.98, ly);
+    cdCtx.fillText(`${item.pct}%`, legendX + legendW - 6, cyCard);
+    cdCtx.restore();
   });
 }
 
